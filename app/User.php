@@ -46,16 +46,4 @@ class User extends Authenticatable
     {
         return $this->hasMany(Question::class);
     }
-
-    /**
-     * Set the user's title and slug using Mutator
-     * 
-     * @param string $value
-     * @return void
-     */
-    public function setTitleAttribute($value)
-    {
-        $this->attributes['title'] = $value;
-        $this->attributes['slug'] = str_slug($value);
-    }
 }
