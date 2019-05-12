@@ -1,13 +1,50 @@
 // Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
+@import url("https://fonts.googleapis.com/css?family=Nunito");
 
 // Variables
-@import 'variables';
+@import "variables";
 
 // Bootstrap
-@import '~bootstrap/scss/bootstrap';
+@import "~bootstrap/scss/bootstrap";
 
 .navbar-laravel {
     background-color: #fff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.counters {
+    margin: 0 10px;
+    font-size: 10px;
+    text-align: center;
+
+    strong {
+        display: block;
+        font-size: 2em;
+    }
+
+    .vote,
+    .answer {
+        width: 60px;
+        height: 60px;
+        /** border: 1px dotted red; **/
+    }
+
+    .status {
+        &.unanswered {
+            border: none;
+        }
+
+        &.answered {
+            border: 1px dotted $green;
+            color: $green;
+        }
+        &.best-answered-accepted {
+            background: $green;
+            color: $white;
+        }
+    }
+
+    .view {
+        margin-top: 10px;
+    }
 }

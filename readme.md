@@ -38,7 +38,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
 
 ---
 
-1. Initialize
+1.  Initialize
 
     ```bash
     composer update
@@ -46,7 +46,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
     npm install
     ```
 
-2. .env
+2.  .env
 
     Configure DB info
 
@@ -57,7 +57,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
     php artisan config:cache
     ```
 
-3. Create model and table
+3.  Create model and table
 
     ```bash
     php artisan make:model Question -m
@@ -69,41 +69,41 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
     php artisan migrate
     ```
 
-4. Generate Fake Data
-   database/factories/UserFactory.php
-   database/factories/QuestionFactory.php
+4.  Generate Fake Data
+    database/factories/UserFactory.php
+    database/factories/QuestionFactory.php
 
     ```bash
     php artisan make:factory QuestionFactory --model=Question
     ```
 
-   - Seeding the database
+    -   Seeding the database
 
-   ```bash
-   php artisan make:seeder UsersTableSeeder
-   php artisan migrate:fresh --seed
-   ```
+    ```bash
+    php artisan make:seeder UsersTableSeeder
+    php artisan migrate:fresh --seed
+    ```
 
-   The difference between “refresh” and “fresh” is that the new fresh command skips all the down methods or the rollback by dropping the tables, then running through the up methods.
+    The difference between “refresh” and “fresh” is that the new fresh command skips all the down methods or the rollback by dropping the tables, then running through the up methods.
 
-   - Call the Seeder class
+    -   Call the Seeder class
 
-   ```php
-   class DatabaseSeeder extends Seeder
-   {
-       /**
-        * Seed the application's database.
-        *
-        * @return void
-        */
-       public function run()
-       {
-           $this->call(UsersTableSeeder::class);
-       }
-   }
-   ```
+    ```php
+    class DatabaseSeeder extends Seeder
+    {
+        /**
+         * Seed the application's database.
+         *
+         * @return void
+         */
+        public function run()
+        {
+            $this->call(UsersTableSeeder::class);
+        }
+    }
+    ```
 
-5. Resource Controllers
+5.  Resource Controllers
 
     ```bash
     php artisan make:controller QuestionController --resource --model Question
@@ -140,7 +140,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
     nano resources/views/vendor/pagination/bootstrap-4.blade.php
     ```
 
-6. Debugging
+6.  Debugging
 
     ```bash
     composer require barryvdh/laravel-debugbar --dev
@@ -162,5 +162,49 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
         view('questions.index', compact('questions'))->render();
 
         dd(\DB::getQueryLog());
+    }
+    ```
+
+7.  CSS
+
+    1. Related files are located at `webpack.mix.js` `resources/sass/_variables.scss` `resources/sass/app.scss` `public/css/app.css` and loaded at `resources/views/layouts/app.blade.php`
+
+    2. Css changes sample:
+
+    ```css
+    .counters {
+        margin-right: 30px;
+        font-size: 11px;
+        text-align: center;
+    }
+    ```
+
+    then running compilation required before viewing the effects
+
+    ```bash
+    npm run dev # Run compilation immediately
+    npm run watch # Run every times you make changes
+    ```
+
+    3. Variables defined sample
+
+    ```scss
+    // customized variables defined
+    $green: rgb(95, 187, 126);
+
+    // and then use
+    .status {
+        &.unanswered {
+            border: none;
+        }
+
+        &.answered {
+            border: 1px dotted $green;
+            color: $green;
+        }
+        &.best-answered-accepted {
+            background: $green;
+            color: $white;
+        }
     }
     ```
