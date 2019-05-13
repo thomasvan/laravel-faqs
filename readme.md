@@ -208,3 +208,10 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
         }
     }
     ```
+
+8.  Create saving/editing form
+    1. Confirm a route if it's correct or not
+    ```bash
+    php artisan route:list
+    php artisan route:list --name=questions # filtering by name
+    ```
