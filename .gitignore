@@ -5,6 +5,7 @@
 /storage/debugbar
 /vendor
 .vscode/
+html
 .env
 .phpunit.result.cache
 Homestead.json
