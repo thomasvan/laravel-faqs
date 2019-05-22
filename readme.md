@@ -38,7 +38,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
 
 ---
 
-1. Initialize
+1.  Initialize
 
     ```bash
     composer update
@@ -46,7 +46,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
     npm install
     ```
 
-2. .env
+2.  .env
 
     Configure DB info
 
@@ -57,7 +57,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
     php artisan config:cache
     ```
 
-3. Create model and table
+3.  Create model and table
 
     ```bash
     php artisan make:model Question -m
@@ -69,7 +69,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
     php artisan migrate
     ```
 
-4. Generate Fake Data
+4.  Generate Fake Data
     database/factories/UserFactory.php
     database/factories/QuestionFactory.php
 
@@ -77,7 +77,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
     php artisan make:factory QuestionFactory --model=Question
     ```
 
-    - Seeding the database
+    -   Seeding the database
 
     ```bash
     php artisan make:seeder UsersTableSeeder
@@ -86,7 +86,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
 
     The difference between “refresh” and “fresh” is that the new fresh command skips all the down methods or the rollback by dropping the tables, then running through the up methods.
 
-    - Call the Seeder class
+    -   Call the Seeder class
 
     ```php
     class DatabaseSeeder extends Seeder
@@ -103,7 +103,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
     }
     ```
 
-5. Resource Controllers
+5.  Resource Controllers
 
     ```bash
     php artisan make:controller QuestionController --resource --model Question
@@ -140,7 +140,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
     nano resources/views/vendor/pagination/bootstrap-4.blade.php
     ```
 
-6. Debugging
+6.  Debugging
 
     ```bash
     composer require barryvdh/laravel-debugbar --dev
@@ -165,9 +165,10 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
     }
     ```
 
-7. CSS
+7.  CSS
+
     1. Css location
-    Related files are located at `webpack.mix.js` `resources/sass/_variables.scss` `resources/sass/app.scss` `public/css/app.css` and loaded at `resources/views/layouts/app.blade.php`
+       Related files are located at `webpack.mix.js` `resources/sass/_variables.scss` `resources/sass/app.scss` `public/css/app.css` and loaded at `resources/views/layouts/app.blade.php`
     2. Css changes sample:
 
         ```css
@@ -208,7 +209,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
         }
         ```
 
-8. Create saving/editing form
+8.  Create saving/editing form
 
     1. Confirm a route if it's correct or not
 
@@ -244,35 +245,67 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
                             <div class="d-flex align-items-centers">
                                 <h2>Ask Question</h2>
                                 <div class="ml-auto">
-                                    <a href="{{ route('questions.index') }}" class="btn btn-outline-secondary">Back to All Questions</a>
+                                    <a
+                                        href="{{ route('questions.index') }}"
+                                        class="btn btn-outline-secondary"
+                                        >Back to All Questions</a
+                                    >
                                 </div>
                             </div>
                         </div>
 
                         <div class="card-body">
-                            <form action="{{ route('questions.store') }}" method="post">
+                            <form
+                                action="{{ route('questions.store') }}"
+                                method="post"
+                            >
                                 @csrf
                                 <div class="form-group">
-                                    <label for="question-title">Question Title</label>
-                                    <input type="text" name="title" id="question-title" class="form-control {{ $errors->has('title')?'is-invalid' :'' }}" />
+                                    <label for="question-title"
+                                        >Question Title</label
+                                    >
+                                    <input
+                                        type="text"
+                                        name="title"
+                                        id="question-title"
+                                        class="form-control {{ $errors->has('title')?'is-invalid' :'' }}"
+                                    />
                                     @if ($errors->has('title'))
-                                        <div class="invalid-feedback">
-                                            <strong>{{ $errors->first('title') }}</strong>
-                                        </div>
+                                    <div class="invalid-feedback">
+                                        <strong
+                                            >{{ $errors->first('title')
+                                            }}</strong
+                                        >
+                                    </div>
                                     @endif
                                 </div>
                                 <div class="form-group">
-                                    <label for="question-body">Explain your Question</label>
-                                    <textarea name="question-body" id="question-body" rows="10" class="form-control {{ $errors->has('body')?'is-invalid' :'' }}"></textarea>
+                                    <label for="question-body"
+                                        >Explain your Question</label
+                                    >
+                                    <textarea
+                                        name="question-body"
+                                        id="question-body"
+                                        rows="10"
+                                        class="form-control {{ $errors->has('body')?'is-invalid' :'' }}"
+                                    ></textarea>
 
                                     @if ($errors->has('body'))
-                                        <div class="invalid-feedback">
-                                            <strong>{{ $errors->first('body') }}</strong>
-                                        </div>
+                                    <div class="invalid-feedback">
+                                        <strong
+                                            >{{ $errors->first('body')
+                                            }}</strong
+                                        >
+                                    </div>
                                     @endif
                                 </div>
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-outline-primary btn-lg">Ask this Question</button>
+                                    <button
+                                        type="submit"
+                                        class="btn btn-outline-primary btn-lg"
+                                    >
+                                        Ask this Question
+                                    </button>
                                 </div>
                             </form>
                         </div>
@@ -283,7 +316,8 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
         @endsection
         ```
 
-9. Form Request Validation
+9.  Form Request Validation
+
     1. Create a form request
 
         ```bash
@@ -323,6 +357,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
         ```
 
 10. Editing form
+
     1. Define an action
 
         ```php
@@ -348,6 +383,41 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
         |        | PUT|PATCH | questions/{question} | questions.update | App\Http\Controllers\QuestionController@update | web        |
         +--------+-----------+----------------------+------------------+------------------------------------------------+------------+
 
-    3. Create the view 
-    > Change the action method to PUT instead of POST
-    
+        ```
+
+    3. Create the view
+
+        > Change the action method to PUT instead of POST
+
+    4. Update action in QuestionController
+
+        ```php
+        /**
+         * Update the specified resource in storage.
+        *
+        * @param  \Illuminate\Http\Request  $request
+        * @param  \App\Question  $question
+        * @return \Illuminate\Http\Response
+        */
+        public function update(AskQuestionRequest $request, Question $question)
+        {
+            $question->update($request->only('title', 'body'));
+            return redirect('/questions')->with('success', 'Your question has been updated successfully.');
+        }
+        ```
+
+11. Deleting form
+
+        1. Notes:
+
+        ```php
+
+        {{ method_field('DELETE') }} >> @method('DELETE')
+        {{  csrf_token() }} >> @csrf
+        ```
+
+        2. Form
+
+        ```php
+
+        ```

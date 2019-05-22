@@ -38,7 +38,8 @@ class QuestionController extends Controller
      */
     public function store(AskQuestionRequest $request)
     {
-        dd('stored');
+        $request->user()->questions()->create($request->only('title', 'body'));
+        return redirect()->route('questions.index')->with('success', "Your question has been submitted");
     }
 
     /**
@@ -84,6 +85,7 @@ class QuestionController extends Controller
      */
     public function destroy(Question $question)
     {
-        //
+        $question->delete();
+        return redirect()->route('questions.index')->with('success', 'Your question has been deleted.');
     }
 }
