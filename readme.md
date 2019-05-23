@@ -408,16 +408,102 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
 
 11. Deleting form
 
-        1. Notes:
+    1. Notes:
 
-        ```php
-
-        {{ method_field('DELETE') }} >> @method('DELETE')
-        {{  csrf_token() }} >> @csrf
+        ```html
+        {{ method_field('DELETE') }} >> @method('DELETE') {{ csrf_token() }} >>
+        @csrf
         ```
 
-        2. Form
+    2. Form
 
         ```php
+        /**
+         * Remove the specified resource from storage.
+         *
+         * @param  \App\Question  $question
+        * @return \Illuminate\Http\Response
+        */
+        public function destroy(Question $question)
+        {
+            $question->delete();
+            return redirect()->route('questions.index')->with('success', 'Your question has been deleted.');
+        }
+        ```
 
+12. Showing form
+
+    1. Enable {slug} parameter
+
+        ```php
+        // route the web.php
+
+        Route::resource('questions', 'QuestionController')->except('show');
+        Route::get('/questions/{slug}', 'QuestionController@show')->name('questions.show');
+        ```
+
+        ```php
+        // modify the boot method in app/Providers/RouteServiceProvider.php
+
+        /**
+        * Define your route model bindings, pattern filters, etc.
+        *
+        * @return void
+        */
+        public function boot()
+        {
+            Route::bind('slug', function ($slug) {
+                return Question::where('slug', $slug)->first() ?? abort(404);
+            });
+
+            parent::boot();
+        }
+        ```
+
+    2. Preparing for showing form
+
+        ```php
+        // using the accessor to return body html
+
+        public function getBodyHtmlAttribute()
+        {
+            return \Parsedown::instance()->text($this->body);
+        }
+        ```
+
+        ```php
+        // using the accessor to return the slug for url: <h3 class="mt-0"><a href="{{ $question->url }}">{{ $question->title }}</a></h3>
+
+        /**
+         * Get the url using Accessor
+        *
+        * @return string
+        */
+        public function getUrlAttribute()
+        {
+            return route("questions.show", $this);
+        }
+        ```
+
+        ```html
+        <!-- prevent escape html using {!! -->
+        <div class="card-body">
+            {!! $question->body_html !!}
+        </div>
+        ```
+
+    3. Controller/Action handler
+
+        ```php
+        /**
+        * Display the specified resource.
+        *
+        * @param  \App\Question  $question
+        * @return \Illuminate\Http\Response
+        */
+        public function show(Question $question)
+        {
+            $question->increment('views');
+            return view('questions.show', compact('question'));
+        }
         ```
