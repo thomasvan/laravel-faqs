@@ -446,7 +446,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
         }
         ```
 
-13. Authorizing the Question Detail
+13. Authorizing the Question Detail using Gates
 
     1. Edit the AuthServiceProvider
 
@@ -502,4 +502,87 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
         @can('update-questions', $question)
             <a href="{{ route('questions.edit', $question->id) }}" class="btn btn-sm btn-outline-info">Edit</a>
         @endcan
+        ```
+
+14. Authorizing the Question Detail using Policy
+
+    1. Generate the Questions policy
+
+        ```bash
+        php artisan make:policy QuestionPolicy --model=Question
+        # >> app/Policies/QuestionPolicy.php
+        ```
+
+        ```php
+        class QuestionPolicy
+        {
+            use HandlesAuthorization;
+
+            /**
+             * Determine whether the user can update the question.
+             *
+             * @param  \App\User  $user
+            * @param  \App\Question  $question
+            * @return mixed
+            */
+            public function update(User $user, Question $question)
+            {
+                return $user->id == $question->user_id;
+            }
+
+            /**
+             * Determine whether the user can delete the question.
+             *
+             * @param  \App\User  $user
+            * @param  \App\Question  $question
+            * @return mixed
+            */
+            public function delete(User $user, Question $question)
+            {
+                return $user->id == $question->user_id && $question->answers < 1;
+            }
+        }
+        ```
+
+    2. Register in AuthServiceProvider
+
+        ```php
+        protected $policies = [
+            Question::class => QuestionPolicy::class
+        ];
+        ```
+
+    3. Usage
+
+        ```php
+        public function edit(Question $question)
+        {
+            $this->authorize('update', $question);
+            return view("questions.edit", compact('question'));
+        }
+        ```
+
+        ```xml
+        <!-- use can directive -->
+        @can('update', $question)
+            <a href="{{ route('questions.edit', $question->id) }}" class="btn btn-sm btn-outline-info">Edit</a>
+        @endcan
+
+        @can('delete', $question)
+            <form class="form-delete" method="post" action="{{ route('questions.destroy', $question->id) }}">
+                @method('DELETE')
+                @csrf
+                <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure?');">Delete</button>
+            </form>
+        @endcan
+        ```
+
+        ```php
+        /**
+        * Restrict access to all page excepts for index and show
+        */
+        public function __construct()
+        {
+            $this->middleware('auth', ['except' => ['index', 'show']]);
+        }
         ```
