@@ -14,11 +14,23 @@ class Question extends Model
     protected $fillable = ['title', 'body'];
 
     /**
-     * Get the user that owns the question.
+     * Get a user that owns the question.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the answers of a questions.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function answers()
+    {
+        return $this->hasMany(Answer::class);
     }
 
     /**
@@ -53,9 +65,14 @@ class Question extends Model
         return $this->created_at->diffForHumans();
     }
 
+    /**
+     * Get the css class based on status using Accessor
+     *
+     * @return void
+     */
     public function getStatusAttribute()
     {
-        if ($this->answers > 0) {
+        if ($this->answers_count > 0) {
             if ($this->best_answer_id) {
                 return 'best-answered-accepted';
             }
@@ -64,6 +81,11 @@ class Question extends Model
         return 'unanswered';
     }
 
+    /**
+     * Get the HTML text from Body attribute using Accessor
+     *
+     * @return string
+     */
     public function getBodyHtmlAttribute()
     {
         return \Parsedown::instance()->text($this->body);

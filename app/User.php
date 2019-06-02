@@ -38,7 +38,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the questions of the user.
+     * Get the questions of a user.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -48,7 +48,17 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the url using Accessor
+     * Get the answers of a questions.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function answers()
+    {
+        return $this->hasMany(Answer::class);
+    }
+
+    /**
+     * Get the url using Accessor.
      * 
      * @return string
      */

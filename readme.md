@@ -61,6 +61,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
 
     ```bash
     php artisan make:model Question -m
+    php artisan make:model Question -m
     ```
 
     change database/migrations/2019_05_02_102128_create_questions_table.php then
@@ -69,7 +70,45 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
     php artisan migrate
     ```
 
-4. Generate Fake Data
+4. Create model relationship
+
+    ```php
+    // in CreateQuestionsTable
+    public function up()
+    {
+        Schema::create('questions', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            // ...
+            $table->foreign('user_id')
+                ->references('id')->on('users')
+                ->onDelete('cascade');
+        });
+    }
+
+    // in Question Model
+    /**
+     * Get the user that owns the question.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    // in User Model
+        /**
+     * Get the questions of the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function questions()
+    {
+        return $this->hasMany(Question::class);
+    }
+    ```
+
+    > Avoid naming a column name the same as an relationship function. Laravel will retrieve the column name first and return it if it is existing.
+
+5. Generate Fake Data
    database/factories/UserFactory.php
    database/factories/QuestionFactory.php
 
@@ -103,7 +142,42 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
     }
     ```
 
-5. Resource Controllers
+6. Perform a migration
+
+   ```bash
+    php artisan make:migration rename_answer_column_in_questions_table --table=questions
+    # do s.t in 2019_06_02_085014_rename_answer_column_in_questions_table ... see below
+    # and then run...
+    php artisan migrate
+    ```
+
+    ```php
+        /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('password_resets', function (Blueprint $table) {
+            $table->string('email')->index();
+            $table->string('token');
+            $table->timestamp('created_at')->nullable();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('password_resets');
+    }
+    ```
+
+7. Resource Controllers
 
     ```bash
     php artisan make:controller QuestionController --resource --model Question
@@ -140,7 +214,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
     nano resources/views/vendor/pagination/bootstrap-4.blade.php
     ```
 
-6. Debugging
+8. Debugging
 
     ```bash
     composer require barryvdh/laravel-debugbar --dev
@@ -165,7 +239,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
     }
     ```
 
-7. CSS
+9.  CSS
 
     1. Css location
        Related files are located at `webpack.mix.js` `resources/sass/_variables.scss` `resources/sass/app.scss` `public/css/app.css` and loaded at `resources/views/layouts/app.blade.php`
@@ -209,7 +283,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
         }
         ```
 
-8. Create saving/editing form
+10. Create saving/editing form
 
     1. Confirm a route if it's correct or not
 
@@ -254,7 +328,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
         </div>
         ```
 
-9. Form Request Validation
+11. Form Request Validation
 
     1. Create a form request
 
@@ -294,7 +368,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
         }
         ```
 
-10. Editing form
+12. Editing form
 
     1. Define an action
 
@@ -344,7 +418,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
         }
         ```
 
-11. Deleting form
+13. Deleting form
 
     1. Notes:
 
@@ -369,7 +443,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
         }
         ```
 
-12. Showing form
+14. Showing form
 
     1. Enable {slug} parameter
 
@@ -446,7 +520,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
         }
         ```
 
-13. Authorizing the Question Detail using Gates
+15. Authorizing the Question Detail using Gates
 
     1. Edit the AuthServiceProvider
 
@@ -504,7 +578,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
         @endcan
         ```
 
-14. Authorizing the Question Detail using Policy
+16. Authorizing the Question Detail using Policy
 
     1. Generate the Questions policy
 
@@ -539,7 +613,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
             */
             public function delete(User $user, Question $question)
             {
-                return $user->id == $question->user_id && $question->answers < 1;
+                return $user->id == $question->user_id && $question->answers_count < 1;
             }
         }
         ```
