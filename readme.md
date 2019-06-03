@@ -25,8 +25,9 @@ laravel new faqs
 
 ```bash
 php artisan tinker
-use Faker\Factory;
+$faker = Faker\Factory::create();
 rtrim($faker->sentence(rand(5,10)),'.')
+$faker->paragraphs(rand(3,7),true)
 => "Rem subscript omanis volutes corporal et"
 ```
 
@@ -114,6 +115,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
 
     ```bash
     php artisan make:factory QuestionFactory --model=Question
+    php artisan make:factory AnswerFactory
     ```
 
     > Seeding the database
@@ -144,11 +146,11 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
 
 6. Perform a migration
 
-   ```bash
-    php artisan make:migration rename_answer_column_in_questions_table --table=questions
-    # do s.t in 2019_06_02_085014_rename_answer_column_in_questions_table ... see below
-    # and then run...
-    php artisan migrate
+    ```bash
+     php artisan make:migration rename_answer_column_in_questions_table --table=questions
+     # do s.t in 2019_06_02_085014_rename_answer_column_in_questions_table ... see below
+     # and then run...
+     php artisan migrate
     ```
 
     ```php
@@ -239,7 +241,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
     }
     ```
 
-9.  CSS
+9. CSS
 
     1. Css location
        Related files are located at `webpack.mix.js` `resources/sass/_variables.scss` `resources/sass/app.scss` `public/css/app.css` and loaded at `resources/views/layouts/app.blade.php`
@@ -660,3 +662,5 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
             $this->middleware('auth', ['except' => ['index', 'show']]);
         }
         ```
+17. Events
+
