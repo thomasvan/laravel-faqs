@@ -662,5 +662,22 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
             $this->middleware('auth', ['except' => ['index', 'show']]);
         }
         ```
-17. Events
 
+17. Events Listening
+
+```php
+    /**
+     * Listening an event using static::
+     *
+     * @return void
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($answer){
+            $answer->question->increment('answers_count');
+            $answer->save();
+        });
+    }
+```
