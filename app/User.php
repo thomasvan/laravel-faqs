@@ -67,4 +67,12 @@ class User extends Authenticatable
         // return route("users.show", $this);
         return '#';
     }
+
+    public function getAvatarAttribute()
+    {
+        $email = $this->email;
+        $default = "https://www.shareicon.net/data/32x32/2016/11/22/855089_people_512x512.png";
+        $size = 32;
+        return "https://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "?d=" . urlencode( $default ) . "&s=" . $size;
+    }
 }

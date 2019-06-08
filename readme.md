@@ -486,6 +486,18 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
         ```
 
         ```php
+        /**
+         * Get the created date using Accessor
+         * 
+         * @return string
+         */
+        public function getCreatedDateAttribute()
+        {
+            return $this->created_at->diffForHumans();
+        }
+        ```
+
+        ```php
         // using the accessor to return the slug for url: <h3 class="mt-0"><a href="{{ $question->url }}">{{ $question->title }}</a></h3>
 
         /**
@@ -665,7 +677,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
 
 17. Events Listening
 
-```php
+    ```php
     /**
      * Listening an event using static::
      *
@@ -680,4 +692,23 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
             $answer->save();
         });
     }
-```
+    ```
+
+18. Eager Loading
+
+    ```php
+    # Eager Loading a relationship: question->answers->user in this case
+    /**
+     * Define your route model bindings, pattern filters, etc.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        Route::bind('slug', function ($slug) {
+            return Question::with('answers.user')->where('slug', $slug)->first() ?? abort(404);
+        });
+
+        parent::boot();
+    }
+    ```
