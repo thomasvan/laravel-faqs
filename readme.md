@@ -244,7 +244,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
 9. CSS
 
     1. Css location
-       Related files are located at `webpack.mix.js` `resources/sass/_variables.scss` `resources/sass/app.scss` `public/css/app.css` and loaded at `resources/views/layouts/app.blade.php`
+       Related files are located at `webpack.mix.js` `node_modules\bootstrap\scss\_variables.scss`  `resources/sass/_variables.scss` `resources/sass/app.scss` `public/css/app.css` and loaded at `resources/views/layouts/app.blade.php`
     2. Css changes sample:
 
         ```css
@@ -712,3 +712,58 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
         parent::boot();
     }
     ```
+
+19. Install fontawesome package using npm
+
+    1. Search package at https://www.npmjs.com/search?q=fortawesome
+
+    2. Chose and copy install cmd: `npm i @fortawesome/free-solid-svg-icons`
+
+    3. Run install `npm i @fortawesome/fontawesome @fortawesome/free-solid-svg-icons -D`
+
+    4. Add a new .js file `resources\js\fontawesome.js`
+
+        ```js
+        import fontawesome from '@fortawesome/fontawesome';
+        import faCaretUp from '@fortawesome/fontawesome-free-solid/faCaretUp';
+        import faCaretDown from '@fortawesome/fontawesome-free-solid/faCaretDown';
+        import faStar from '@fortawesome/fontawesome-free-solid/faStar';
+        import faCheck from '@fortawesome/fontawesome-free-solid/faCheck';
+        ```
+
+        then include it in `resources\js\app.js`
+
+        ```js
+        require('./bootstrap');
+        require('./fontawesome');
+        ```
+
+    5. Run cmd `npm run watch # Run every times you make changes`
+
+    6. Be used in blade
+
+        ```html
+        <a title="This question is useful" class="vote-up">
+            <i class="fas fa-caret-up fa-3x"></i>
+        </a>
+        <span class="votes-count">1230</span>
+        <a title="This question is not useful" class="vote-down off">
+            <i class="fas fa-caret-down fa-3x"></i>
+        </a>
+        ```
+
+    7. Extra styles in `resources\sass\app.scss`
+
+        ```scss
+        .vote-controls {
+            min-width: 60px;
+            margin-right: 30px;
+            text-align: center;
+            color: $gray-700; /** comes from node_modules\bootstrap\scss\_variables.scss **/
+
+            span, a {
+            display: block;
+            }
+        }
+        ```
+
