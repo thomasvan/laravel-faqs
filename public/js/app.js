@@ -51402,8 +51402,8 @@ _fortawesome_fontawesome__WEBPACK_IMPORTED_MODULE_0__["default"].library.add([_f
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /mnt/d/Sites/MINE/faqs/files/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /mnt/d/Sites/MINE/faqs/files/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/ubuntu/environment/faqs/files/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/ubuntu/environment/faqs/files/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

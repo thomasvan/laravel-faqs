@@ -244,7 +244,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
 9. CSS
 
     1. Css location
-       Related files are located at `webpack.mix.js` `node_modules\bootstrap\scss\_variables.scss`  `resources/sass/_variables.scss` `resources/sass/app.scss` `public/css/app.css` and loaded at `resources/views/layouts/app.blade.php`
+       Related files are located at `webpack.mix.js` `node_modules\bootstrap\scss\_variables.scss` `resources/sass/_variables.scss` `resources/sass/app.scss` `public/css/app.css` and loaded at `resources/views/layouts/app.blade.php`
     2. Css changes sample:
 
         ```css
@@ -488,7 +488,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
         ```php
         /**
          * Get the created date using Accessor
-         * 
+         *
          * @return string
          */
         public function getCreatedDateAttribute()
@@ -534,7 +534,60 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
         }
         ```
 
-15. Authorizing the Question Detail using Gates
+15. Creating form for child model
+
+    1. Define the route for child model
+
+        ```php
+        // in routes/web.php
+        Route::resource('questions.answers', 'AnswerController');
+        ```
+
+    2. Check the route nnd define the Controller if necessary
+
+        ```bash
+        php artisan make:controller AnswerController -r -m Answer # resource and model
+        php artisan route:list --name=questions
+        # questions/{question}/answers/create        | questions.answers.create  | App\Http\Controllers\AnswerController@create
+        ```
+
+    3. Re-define the route
+
+        ```php
+        Route::post('/questions/{question}/answers', 'AnswerController@store');
+        // recheck the route to see the results:  php artisan route:list --name=questions
+        ```
+
+    4. Prepare the form
+
+        ```xml
+        <form action="{{ route('questions.answers.store', $question->id) }}" method="post">
+            @csrf
+            <div class="form-group">
+                <textarea class="form-control {{ $errors->has('body') ? 'is-invalid' : '' }}" rows="7" name="body"></textarea>
+                @if ($errors->has('body'))
+                    <div class="invalid-feedback">
+                        <strong>{{ $errors->first('body') }}</strong>
+                    </div>
+                @endif
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-lg btn-outline-primary">Submit</button>
+            </div>
+        </form>
+        ```
+
+    5. Controller/Action handler
+
+        ```php
+        $question->answers()->create($request->validate([
+            'body' => 'required'
+        ]) + ['user_id' => \Auth::id()]);
+
+        return back()->with('success', "Your answer has been submitted successfully");
+        ```
+
+16. Authorizing the Question Detail using Gates
 
     1. Edit the AuthServiceProvider
 
@@ -592,7 +645,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
         @endcan
         ```
 
-16. Authorizing the Question Detail using Policy
+17. Authorizing the Question Detail using Policy
 
     1. Generate the Questions policy
 
@@ -675,7 +728,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
         }
         ```
 
-17. Events Listening
+18. Events Listening
 
     ```php
     /**
@@ -694,7 +747,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
     }
     ```
 
-18. Eager Loading
+19. Eager Loading
 
     ```php
     # Eager Loading a relationship: question->answers->user in this case
@@ -713,7 +766,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
     }
     ```
 
-19. Install fontawesome package using npm
+20. Install fontawesome package using npm
 
     1. Search package at https://www.npmjs.com/search?q=fortawesome
 
@@ -724,18 +777,18 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
     4. Add a new .js file `resources\js\fontawesome.js`
 
         ```js
-        import fontawesome from '@fortawesome/fontawesome';
-        import faCaretUp from '@fortawesome/fontawesome-free-solid/faCaretUp';
-        import faCaretDown from '@fortawesome/fontawesome-free-solid/faCaretDown';
-        import faStar from '@fortawesome/fontawesome-free-solid/faStar';
-        import faCheck from '@fortawesome/fontawesome-free-solid/faCheck';
+        import fontawesome from "@fortawesome/fontawesome";
+        import faCaretUp from "@fortawesome/fontawesome-free-solid/faCaretUp";
+        import faCaretDown from "@fortawesome/fontawesome-free-solid/faCaretDown";
+        import faStar from "@fortawesome/fontawesome-free-solid/faStar";
+        import faCheck from "@fortawesome/fontawesome-free-solid/faCheck";
         ```
 
         then include it in `resources\js\app.js`
 
         ```js
-        require('./bootstrap');
-        require('./fontawesome');
+        require("./bootstrap");
+        require("./fontawesome");
         ```
 
     5. Run cmd `npm run watch # Run every times you make changes`
@@ -761,9 +814,9 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
             text-align: center;
             color: $gray-700; /** comes from node_modules\bootstrap\scss\_variables.scss **/
 
-            span, a {
-            display: block;
+            span,
+            a {
+                display: block;
             }
         }
         ```
-

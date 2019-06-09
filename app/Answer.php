@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Answer extends Model
 {
+    protected $fillable = ['body', 'user_id'];
     /**
      * Get a question that contains the answer
      *
@@ -50,7 +51,7 @@ class Answer extends Model
     {
         parent::boot();
 
-        static::created(function ($answer){
+        static::created(function ($answer) {
             $answer->question->increment('answers_count');
             $answer->save();
         });
