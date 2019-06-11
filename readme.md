@@ -29,6 +29,12 @@ $faker = Faker\Factory::create();
 rtrim($faker->sentence(rand(5,10)),'.')
 $faker->paragraphs(rand(3,7),true)
 => "Rem subscript omanis volutes corporal et"
+
+# Update a question
+$answer = App\Answer::find(44);
+$question = $answer->question;
+$question->best_answer_id = 44;
+$question->save();
 ```
 
 Publish Tinker's configuration file
