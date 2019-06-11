@@ -39,7 +39,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
 
 ---
 
-1. Initialize
+1.  Initialize
 
     ```bash
     composer update
@@ -47,7 +47,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
     npm install
     ```
 
-2. .env
+2.  .env
 
     Configure DB info
 
@@ -58,7 +58,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
     php artisan config:cache
     ```
 
-3. Create model and table
+3.  Create model and table
 
     ```bash
     php artisan make:model Question -m
@@ -71,7 +71,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
     php artisan migrate
     ```
 
-4. Create model relationship
+4.  Create model relationship
 
     ```php
     // in CreateQuestionsTable
@@ -109,9 +109,9 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
 
     > Avoid naming a column name the same as an relationship function. Laravel will retrieve the column name first and return it if it is existing.
 
-5. Generate Fake Data
-   database/factories/UserFactory.php
-   database/factories/QuestionFactory.php
+5.  Generate Fake Data
+    database/factories/UserFactory.php
+    database/factories/QuestionFactory.php
 
     ```bash
     php artisan make:factory QuestionFactory --model=Question
@@ -144,7 +144,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
     }
     ```
 
-6. Perform a migration
+6.  Perform a migration
 
     ```bash
      php artisan make:migration rename_answer_column_in_questions_table --table=questions
@@ -179,7 +179,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
     }
     ```
 
-7. Resource Controllers
+7.  Resource Controllers
 
     ```bash
     php artisan make:controller QuestionController --resource --model Question
@@ -216,7 +216,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
     nano resources/views/vendor/pagination/bootstrap-4.blade.php
     ```
 
-8. Debugging
+8.  Debugging
 
     ```bash
     composer require barryvdh/laravel-debugbar --dev
@@ -241,7 +241,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
     }
     ```
 
-9. CSS
+9.  CSS
 
     1. Css location
        Related files are located at `webpack.mix.js` `node_modules\bootstrap\scss\_variables.scss` `resources/sass/_variables.scss` `resources/sass/app.scss` `public/css/app.css` and loaded at `resources/views/layouts/app.blade.php`
@@ -324,7 +324,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
 
         <div class="card-body">
             <form action="{{ route('questions.update', $question) }}" method="post">
-                {{ method_field('PUT') }}
+                {{ method_field('PUT') }} or @method('PUT')
                 @include('questions._form', ['submitButtonTitle' => 'Update Question'])
             </form>
         </div>
@@ -372,53 +372,78 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
 
 12. Editing form
 
-    1. Define an action
+        1. Define an action
 
-        ```php
-        /**
-         * Show the form for editing the specified resource.
-         *
-         * @param  \App\Question  $question
+            ```php
+            /**
+             * Show the form for editing the specified resource.
+             *
+             * @param  \App\Question  $question
+                * @return \Illuminate\Http\Response
+                */
+            public function edit(Question $question)
+            {
+                return view("questions.edit", compact($question));
+            }
+            ```
+
+        2. Check the routing
+
+            ```bash
+            php artisan route:list -name=questions.update
+            --------+-----------+----------------------+------------------+------------------------------------------------+------------+
+            | Domain | Method    | URI                  | Name             | Action                                         | Middleware |
+            +--------+-----------+----------------------+------------------+------------------------------------------------+------------+
+            |        | PUT|PATCH | questions/{question} | questions.update | App\Http\Controllers\QuestionController@update | web        |
+            +--------+-----------+----------------------+------------------+------------------------------------------------+------------+
+
+            ```
+
+        3. Create the view
+
+            > Change the action method to PUT instead of POST
+
+            ```xml
+            {{ method_field('PUT') }} or @method('PUT')
+            {{ method_field('PATCH') }} or @method('PATCH') <!-- if there is one field updated -->
+            ```
+
+            > Use the @old directive to keep the old value as error occurred
+
+            ```xml
+            <form action="{{ route('questions.answers.update', [$question->id, $answer->id]) }}" method="post">
+                @csrf
+                @method('PATCH')
+                <div class="form-group">
+                    <textarea class="form-control {{ $errors->has('body') ? 'is-invalid' : '' }}" rows="7" name="body">{{ old('body', $answer->body) }}</textarea>
+                    @if ($errors->has('body'))
+                        <div class="invalid-feedback">
+                            <strong>{{ $errors->first('body') }}</strong>
+                        </div>
+                    @endif
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-lg btn-outline-primary">Update</button>
+                </div>
+            </form>
+            ```
+
+        4. Update action in QuestionController
+
+            ```php
+            /**
+             * Update the specified resource in storage.
+            *
+            * @param  \Illuminate\Http\Request  $request
+            * @param  \App\Question  $question
             * @return \Illuminate\Http\Response
             */
-        public function edit(Question $question)
-        {
-            return view("questions.edit", compact($question));
-        }
-        ```
-
-    2. Check the routing
-
-        ```bash
-        php artisan route:list -name=questions.update
-        --------+-----------+----------------------+------------------+------------------------------------------------+------------+
-        | Domain | Method    | URI                  | Name             | Action                                         | Middleware |
-        +--------+-----------+----------------------+------------------+------------------------------------------------+------------+
-        |        | PUT|PATCH | questions/{question} | questions.update | App\Http\Controllers\QuestionController@update | web        |
-        +--------+-----------+----------------------+------------------+------------------------------------------------+------------+
-
-        ```
-
-    3. Create the view
-
-        > Change the action method to PUT instead of POST
-
-    4. Update action in QuestionController
-
-        ```php
-        /**
-         * Update the specified resource in storage.
-        *
-        * @param  \Illuminate\Http\Request  $request
-        * @param  \App\Question  $question
-        * @return \Illuminate\Http\Response
-        */
-        public function update(AskQuestionRequest $request, Question $question)
-        {
-            $question->update($request->only('title', 'body'));
-            return redirect('/questions')->with('success', 'Your question has been updated successfully.');
-        }
-        ```
+            public function update(AskQuestionRequest $request, Question $question)
+            {
+                $question->update($request->only('title', 'body'));
+                return redirect('/questions')->with('success', 'Your question has been updated successfully.');
+            }
+            ```
 
 13. Deleting form
 
@@ -820,3 +845,16 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
             }
         }
         ```
+
+21. Passing route parameters
+
+```bash
+# in case you found the route for answer/edit as below
+php artisan route:list --name questions.answers
+>> questions/{question}/answers/{answer}/edit | questions.answers.edit
+```
+
+```xml
+// then let define the route with parameters like this
+<a href="{{ route('questions.answers.edit', [$question->id, $answer->id]) }}" ...
+```
