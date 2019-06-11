@@ -31,10 +31,12 @@ $faker->paragraphs(rand(3,7),true)
 => "Rem subscript omanis volutes corporal et"
 
 # Update a question
-$answer = App\Answer::find(44);
+$answer = App\Answer::find(48);
 $question = $answer->question;
-$question->best_answer_id = 44;
+$question->best_answer_id = 48;
 $question->save();
+# ...
+$question->refresh();
 ```
 
 Publish Tinker's configuration file
@@ -857,13 +859,46 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
 
 21. Passing route parameters
 
-```bash
-# in case you found the route for answer/edit as below
-php artisan route:list --name questions.answers
->> questions/{question}/answers/{answer}/edit | questions.answers.edit
-```
+    ```bash
+    # in case you found the route for answer/edit as below
+    php artisan route:list --name questions.answers
+    >> questions/{question}/answers/{answer}/edit | questions.answers.edit
+    ```
 
-```xml
-// then let define the route with parameters like this
-<a href="{{ route('questions.answers.edit', [$question->id, $answer->id]) }}" ...
-```
+    ```xml
+    // then let define the route with parameters like this
+    <a href="{{ route('questions.answers.edit', [$question->id, $answer->id]) }}" ...
+    ```
+
+22. Add the foreign key by migration
+
+    ```bash
+    php artisan make:migration add_foreign_key_best_answer_id_to_questions_schema --table=questions
+    ```
+
+    ```php
+    public function up()
+    {
+        Schema::table('questions', function (Blueprint $table) {
+            $table->foreign('best_answer_id')
+                ->references('id')
+                ->on('answers')
+                ->onDelete('SET NULL');
+        });
+    }
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('questions', function (Blueprint $table) {
+            $table->dropForeign(['best_answer_id']);
+        });
+    }
+    ```
+
+    ```bash
+    php artisan migrate
+    ```
