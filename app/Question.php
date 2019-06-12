@@ -90,4 +90,18 @@ class Question extends Model
     {
         return \Parsedown::instance()->text($this->body);
     }
+
+    
+    /**
+     * Accept the Best Answer which is using for single action controller
+     *
+     * @param  \App\Answer $answer
+     *
+     * @return void
+     */
+    public function acceptBestAnswer(Answer $answer)
+    {
+        $this->best_answer_id = $answer->id;
+        $this->save();
+    }
 }

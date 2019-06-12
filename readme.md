@@ -902,3 +902,24 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
     ```bash
     php artisan migrate
     ```
+
+23. Define a single action controller
+
+    ```bash
+    # Define the route
+    Route::post('/answers/{answer}/accept','AcceptAnswerController')->name('answers.accept');
+    # then create a controller
+    php artisan make:controller AcceptAnswerController
+    ```
+
+    ```php
+    // then define the single actions
+    class AcceptAnswerController extends Controller
+    {
+        public function __invoke(Answer $answer)
+        {
+            $answer->question->acceptBestAnswer($answer);
+            return back();
+        }
+    }
+    ```

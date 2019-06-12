@@ -43,7 +43,7 @@ class Answer extends Model
     }
     public function getStatusAttribute()
     {
-        return $this->id === $this->question->best_answer_id ? 'vote-accepted' : '';
+        return $this->isBest() ? 'vote-accepted' : '';
     }
 
     /**
@@ -63,5 +63,15 @@ class Answer extends Model
             $question = $answer->question;
             $question->decrement('answers_count');
         });
+    }
+
+    public function getIsBestAttribute()
+    {
+        return  $this->isBest();
+    }
+
+    protected function isBest()
+    {
+        return $this->id === $this->question->best_answer_id;        # code...
     }
 }
