@@ -47,7 +47,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
 
 ---
 
-1.  Initialize
+1. Initialize
 
     ```bash
     composer update
@@ -55,7 +55,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
     npm install
     ```
 
-2.  .env
+2. .env
 
     Configure DB info
 
@@ -66,7 +66,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
     php artisan config:cache
     ```
 
-3.  Create model and table
+3. Create model and table
 
     ```bash
     php artisan make:model Question -m
@@ -79,7 +79,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
     php artisan migrate
     ```
 
-4.  Create model relationship
+4. Create model relationship
 
     ```php
     // in CreateQuestionsTable
@@ -117,7 +117,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
 
     > Avoid naming a column name the same as an relationship function. Laravel will retrieve the column name first and return it if it is existing.
 
-5.  Generate Fake Data
+5. Generate Fake Data
     database/factories/UserFactory.php
     database/factories/QuestionFactory.php
 
@@ -152,7 +152,14 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
     }
     ```
 
-6.  Perform a migration
+    > call the seeder
+
+    ```bash
+    php artisan db:seed // run all seeders
+    php artisan db:seed --class=FavoritesTableSeeder // run specific seeder
+    ```
+
+6. Perform a migration
 
     ```bash
      php artisan make:migration rename_answer_column_in_questions_table --table=questions
@@ -187,7 +194,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
     }
     ```
 
-7.  Resource Controllers
+7. Resource Controllers
 
     ```bash
     php artisan make:controller QuestionController --resource --model Question
@@ -224,7 +231,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
     nano resources/views/vendor/pagination/bootstrap-4.blade.php
     ```
 
-8.  Debugging
+8. Debugging
 
     ```bash
     composer require barryvdh/laravel-debugbar --dev
@@ -249,7 +256,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
     }
     ```
 
-9.  CSS
+9. CSS
 
     1. Css location
        Related files are located at `webpack.mix.js` `node_modules\bootstrap\scss\_variables.scss` `resources/sass/_variables.scss` `resources/sass/app.scss` `public/css/app.css` and loaded at `resources/views/layouts/app.blade.php`
@@ -923,3 +930,72 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
         }
     }
     ```
+
+24. Create many-many relationship
+
+    ```bash
+    # Create the migration
+    php artisan make:migration crate_favorites_schema
+    ```
+
+    ```php
+    // Create the relationship schema
+    Schema::create('favorites', function (Blueprint $table) {
+        $table->unsignedBigInteger('user_id');
+        $table->unsignedBigInteger('question_id');
+        $table->timestamps();
+        $table->unique(['user_id', 'question_id']);
+    });
+    ```
+
+    ```bash
+    # run that migration
+    php artisan migrate
+    ```
+
+    ```php
+    // Define the relation ship, 'favorites' table instead of question_user as default
+    public function favorites()
+    {
+        return $this->belongsToMany(Question::class, 'favorites')->withTimestamps();//'user_id','question_id' keys as default
+    }
+
+    public function favorites()
+    {
+        return $this->belongsToMany(User::class, 'favorites')->withTimestamps();//'question_id','user_id' keys as default
+    }
+    // ->withTimestamps() define the timestamp in many=many relationship table
+    ```
+
+    ```php
+    // testing using tinker
+    $q1 = App\Question::find(1)
+    $q2 = App\Question::find(2)
+    $u1 = App\User::find(1);
+    $u2 = App\User::find(2);
+    $u1->favorites()->attach([$q1->id,$q2->id]) # or $u1->favorites()->sync($q1)
+    $u1->refresh()
+
+    $u1->favorites()->detach($q1) # to detach
+    $u1->load('favorites')->favorites
+
+    $q2->favorites()->wherePivotIn('user_id',[1])->count()
+    $q2->favorites()->where('user_id',1 )->count()
+    ```
+
+25. pluck
+    > The pluck method retrieves all of the values for a given key:
+
+    ```php
+    $collection = collect([
+        ['product_id' => 'prod-100', 'name' => 'Desk'],
+        ['product_id' => 'prod-200', 'name' => 'Chair'],
+    ]);
+
+    $plucked = $collection->pluck('name');
+
+    $plucked->all();
+
+    // ['Desk', 'Chair']
+    ```
+    
