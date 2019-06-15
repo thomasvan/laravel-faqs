@@ -47,7 +47,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
 
 ---
 
-1. Initialize
+1.  Initialize
 
     ```bash
     composer update
@@ -55,7 +55,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
     npm install
     ```
 
-2. .env
+2.  .env
 
     Configure DB info
 
@@ -66,7 +66,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
     php artisan config:cache
     ```
 
-3. Create model and table
+3.  Create model and table
 
     ```bash
     php artisan make:model Question -m
@@ -79,7 +79,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
     php artisan migrate
     ```
 
-4. Create model relationship
+4.  Create model relationship
 
     ```php
     // in CreateQuestionsTable
@@ -117,7 +117,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
 
     > Avoid naming a column name the same as an relationship function. Laravel will retrieve the column name first and return it if it is existing.
 
-5. Generate Fake Data
+5.  Generate Fake Data
     database/factories/UserFactory.php
     database/factories/QuestionFactory.php
 
@@ -159,7 +159,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
     php artisan db:seed --class=FavoritesTableSeeder // run specific seeder
     ```
 
-6. Perform a migration
+6.  Perform a migration
 
     ```bash
      php artisan make:migration rename_answer_column_in_questions_table --table=questions
@@ -194,7 +194,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
     }
     ```
 
-7. Resource Controllers
+7.  Resource Controllers
 
     ```bash
     php artisan make:controller QuestionController --resource --model Question
@@ -231,7 +231,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
     nano resources/views/vendor/pagination/bootstrap-4.blade.php
     ```
 
-8. Debugging
+8.  Debugging
 
     ```bash
     composer require barryvdh/laravel-debugbar --dev
@@ -256,7 +256,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
     }
     ```
 
-9. CSS
+9.  CSS
 
     1. Css location
        Related files are located at `webpack.mix.js` `node_modules\bootstrap\scss\_variables.scss` `resources/sass/_variables.scss` `resources/sass/app.scss` `public/css/app.css` and loaded at `resources/views/layouts/app.blade.php`
@@ -984,6 +984,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
     ```
 
 25. pluck
+
     > The pluck method retrieves all of the values for a given key:
 
     ```php
@@ -998,4 +999,74 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
 
     // ['Desk', 'Chair']
     ```
-    
+
+26. Create many-to-many polymirphic relationship
+
+    1. Create a migration
+
+        ```bash
+        php artisan make:migration create_votable_table
+        ```
+
+    2. Create a schema
+
+        ```php
+        Schema::create('votable', function (Blueprint $table) {
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('votable_id');
+            $table->string('votable_type');
+            $table->tinyInteger('vote')->comment('-1: down vote, 1: up vote');
+            $table->timestamps();
+            $table->unique(['user_id', 'votable_id', 'votable_type']);
+        });
+        ```
+
+    3. Create a schema
+
+        ```php
+        Schema::create('votable', function (Blueprint $table) {
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('votable_id');
+            $table->string('votable_type');
+            $table->tinyInteger('vote')->comment('-1: down vote, 1: up vote');
+            $table->timestamps();
+            $table->unique(['user_id', 'votable_id', 'votable_type']);
+        });
+        //php artisan migrate
+        ```
+
+    4. Define the relationships
+
+        ```php
+        // in user model
+        public function voteQuestions()
+        {
+            return $this->morphedByMany(Question::class, 'votable');
+        }
+
+        // in question model
+            public function votes()
+        {
+            return $this->morphToMany(User::class, 'votable');
+        }
+        ```
+
+    5. Tinker testing
+
+        ```php
+        $u1 = App\User::find(1)
+        $u2 = App\User::find(2)
+        $q1 = App\Question::find(1)
+        $q2 = App\Question::find(2)
+        $a1 = App\Answer::find(1)
+        $a2 = App\Answer::find(2)
+        $u1->voteQuestions()->attach($q1, ['vote' => 1])
+        $u1->voteQuestions()->where('votable_id', $q1->id)->exists()
+        $u2->voteQuestions()->attach($q1, ['vote' => -1])
+        $u1->voteAnswers()->attach($a1, ['vote' => -1]) // $u1->voteAnswers()->detach($a1)
+        $u2->voteAnswers()->attach($a1, ['vote' => -1])
+
+        $u1->voteAnswers()->updateExistingPivot($a1, ['vote' => 1])
+        $q1->votes()->withPivot('vote')->get() // pull the vote column up
+        $q1->votes()->withPivot('vote', -1)->count() // how many down voting
+        ```

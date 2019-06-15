@@ -92,7 +92,7 @@ class Question extends Model
         return \Parsedown::instance()->text($this->body);
     }
 
-    
+
     /**
      * Accept the Best Answer which is using for single action controller
      *
@@ -107,9 +107,9 @@ class Question extends Model
     }
     public function favorites()
     {
-        return $this->belongsToMany(User::class, 'favorites')->withTimestamps();//'question_id','user_id' keys as default
+        return $this->belongsToMany(User::class, 'favorites')->withTimestamps(); //'question_id','user_id' keys as default
     }
-    
+
     public function isFavorited()
     {
         return $this->favorites()->where('user_id', auth()->id())->count() > 0;
@@ -121,6 +121,20 @@ class Question extends Model
     public function getFavoritesCountAttribute()
     {
         return $this->favorites()->count();
-    }    
+    }
+
+    public function votes()
+    {
+        return $this->morphToMany(User::class, 'votable');
+    }
+
+    public function upVotes()
+    {
+        return $this->votes()->wherePivot('vote', 1);
+    }
+    
+    public function downVotes()
+    {
+        return $this->votes()->wherePivot('vote', -1);
+    }
 }
- 
