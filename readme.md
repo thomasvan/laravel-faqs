@@ -1070,3 +1070,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
         $q1->votes()->withPivot('vote')->get() // pull the vote column up
         $q1->votes()->withPivot('vote', -1)->count() // how many down voting
         ```
+
+27. Code refactoring
+    1. DRY
+        > [wikipedia](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)
