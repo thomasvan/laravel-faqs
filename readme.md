@@ -538,17 +538,15 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
         ```
 
         ```php
-        // using the accessor to return the slug for url: <h3 class="mt-0"><a href="{{ $question->url }}">{{ $question->title }}</a></h3>
-
-        /**
-         * Get the url using Accessor
-        *
-        * @return string
-        */
-        public function getUrlAttribute()
+        public function getExcerptAttribute()
         {
-            return route("questions.show", $this);
+            return $this->excerpt(250);
         }
+        public function excerpt($length)
+        {
+            return str_limit($this->bodyHtml(), $length);
+        }
+        // this accessor can be used as an attr or function
         ```
 
         ```xml
@@ -556,6 +554,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
         <div class="card-body">
             {!! $question->body_html !!}
         </div>
+
         ```
 
     3. Controller/Action handler
@@ -1072,5 +1071,18 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
         ```
 
 27. Code refactoring
+
     1. DRY
         > [wikipedia](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)
+    2. HTMLPurifier for Laravel 5
+
+        > [github](https://github.com/mewebstudio/Purifier)
+
+        ```bash
+        composer require mews/purifier
+        php artisan vendor:publish --provider="Mews\Purifier\PurifierServiceProvider" # >> /config/purifier.php
+
+        # testing with tinker
+        $str = '<p>hello world !</p><script>alert("hello world")</script>'
+        clean($str) # or Purifier::clean($str)
+        ```

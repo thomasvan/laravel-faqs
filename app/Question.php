@@ -49,6 +49,16 @@ class Question extends Model
     }
 
     /**
+     * Set the body content with Purifier::clean XSS attack
+     * 
+     * @return void
+     */
+    // public function setBodyAttribute($value)
+    // {
+    //     $this->attributes['body'] = clen($value);
+    // }
+
+    /**
      * Get the url using Accessor
      * 
      * @return string
@@ -91,7 +101,7 @@ class Question extends Model
      */
     public function getBodyHtmlAttribute()
     {
-        return \Parsedown::instance()->text($this->body);
+        return Purifier::clean($this->bodyHtml());
     }
 
 
@@ -123,5 +133,17 @@ class Question extends Model
     public function getFavoritesCountAttribute()
     {
         return $this->favorites()->count();
+    }
+    public function getExcerptAttribute()
+    {
+        return $this->excerpt(250);
+    }
+    public function excerpt($length)
+    {
+        return str_limit($this->bodyHtml(), $length);
+    }
+    private function bodyHtml()
+    {
+        return \Parsedown::instance()->text(strip_tags($this->body));
     }
 }
