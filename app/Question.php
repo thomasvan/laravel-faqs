@@ -33,7 +33,7 @@ class Question extends Model
      */
     public function answers()
     {
-        return $this->hasMany(Answer::class);
+        return $this->hasMany(Answer::class)->orderBy('votes_count', 'desc');;
     }
 
     /**
@@ -101,7 +101,7 @@ class Question extends Model
      */
     public function getBodyHtmlAttribute()
     {
-        return Purifier::clean($this->bodyHtml());
+        return clean($this->bodyHtml());
     }
 
 

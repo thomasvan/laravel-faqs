@@ -1,4 +1,5 @@
 <?php
+use App\Http\Controllers\QuestionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -11,9 +12,13 @@
 |
 */
 
-Route::get('/', function () {
+/**
+ Route::get('/', function () {
     return view('welcome');
 });
+ */
+
+Route::get('/', 'QuestionController@index');
 
 Auth::routes();
 

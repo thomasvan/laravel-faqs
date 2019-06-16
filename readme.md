@@ -1086,3 +1086,35 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
         $str = '<p>hello world !</p><script>alert("hello world")</script>'
         clean($str) # or Purifier::clean($str)
         ```
+
+28. Sort existing query/relationship
+
+    1. Query
+
+        ```php
+        return Question::with(['answers.user', 'answers' => function ($query) {
+            $query->orderBy('votes_count', 'desc');
+        }])->where('slug', $slug)->first() ?? abort(404);
+        ```
+
+    2. Relationship
+
+        ```php
+        public function answers()
+        {
+            return $this->hasMany(Answer::class)->orderBy('votes_count', 'desc');;
+        }
+        // $question->answers will be always sorted accordingly
+        ```
+
+29. Blade template
+
+    1. @forelse
+
+        ```xml
+        @forelse ($questions as $question)
+
+        @empty
+            <!-- if there is no question -->
+        @endforelse
+        ```
