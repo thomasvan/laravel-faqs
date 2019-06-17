@@ -1127,3 +1127,36 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
             <!-- ['answer' => $answer] is optional -->
         @endforeach
         ```
+
+30. vue.js
+
+            1. Prepare the model
+
+                > Since the object model passed to vue component does not include accessor, you need to declare the \$appends property to pull it off
+
+                ```php
+
+                class User extends Authenticatable
+                {
+                use Notifiable;
+
+                    /**
+                     * The attributes that are mass assignable.
+                     *
+                     * @var array
+                    */
+                    protected $fillable = [
+                        'name', 'email', 'password',
+                    ];
+
+                    protected $appends = ['url', 'avatar'];
+                    //...
+                ```
+
+            2. Components: '''resources/js/components/UserInfo.vue'''
+
+            3. Called by:
+
+            ```xml
+            <user-info :model="{{ $question }}" label="Asked"></user-info>
+            ```

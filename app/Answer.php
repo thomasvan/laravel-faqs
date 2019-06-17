@@ -9,6 +9,9 @@ class Answer extends Model
     use VotableTrait;
 
     protected $fillable = ['body', 'user_id'];
+
+    protected $appends = ['created_date'];
+
     /**
      * Get a question that contains the answer
      *
