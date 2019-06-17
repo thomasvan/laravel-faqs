@@ -1118,3 +1118,12 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
             <!-- if there is no question -->
         @endforelse
         ```
+
+    2. Parent variables are option as calling @include a child view, since they are available for child view as default
+
+        ```xml
+        @foreach ($answers as $answer)
+            @include('answers._answer', ['answer' => $answer])
+            <!-- ['answer' => $answer] is optional -->
+        @endforeach
+        ```
