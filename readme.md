@@ -1130,33 +1130,70 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
 
 30. vue.js
 
-            1. Prepare the model
+    1. Vue Directives
 
-                > Since the object model passed to vue component does not include accessor, you need to declare the \$appends property to pull it off
+        ```js
+            v-bind: ~ :
+            v-on: ~ @
+            v-if and v-else // must be in the same level element
+            v-html // ~ {!! !!}
+        ```
 
-                ```php
+    2. Basic
 
-                class User extends Authenticatable
-                {
-                use Notifiable;
+        1. Prepare the model
 
-                    /**
-                     * The attributes that are mass assignable.
-                     *
-                     * @var array
-                    */
-                    protected $fillable = [
-                        'name', 'email', 'password',
-                    ];
+            > Since the object model passed to vue component does not include accessor, you need to declare the \$appends property to pull it off
 
-                    protected $appends = ['url', 'avatar'];
-                    //...
-                ```
+            ```php
 
-            2. Components: '''resources/js/components/UserInfo.vue'''
+            class User extends Authenticatable
+            {
+            use Notifiable;
 
-            3. Called by:
+                /**
+                 * The attributes that are mass assignable.
+                 *
+                 * @var array
+                */
+                protected $fillable = [
+                    'name', 'email', 'password',
+                ];
 
-            ```xml
-            <user-info :model="{{ $question }}" label="Asked"></user-info>
+                protected $appends = ['url', 'avatar'];
+                //...
             ```
+
+        2. Components: '''resources/js/components/UserInfo.vue'''
+
+        3. Called by:
+
+        ```xml
+        <user-info :model="{{ $question }}" label="Asked"></user-info>
+        ```
+
+    3. Update field using axios
+
+        ```js
+        export default {
+        props: ["answer"],
+        data() {
+            return {
+            editing: false,
+            body: this.answer.body,
+            bodyHtml: this.answer.body_html,
+            id: this.answer.id,
+            questionId: this.answer.question_id
+            };
+        },
+        methods: {
+            update() {
+            axios.patch(`/questions/{this.questionId}/answers/{this.id}`{ // php artisan route:list --name answers >> questions/{question}/answers/{answer}      | questions.answers.update
+                body:this.body
+            });
+            }
+        }
+        };
+        ```
+
+        > no csrf tonken needed since it has been included in resources/js/bootstrap.js
