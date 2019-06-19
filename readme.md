@@ -1198,3 +1198,27 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
         ```
 
         > no csrf tonken needed since it has been included in resources/js/bootstrap.js
+
+    4. Install vue.js package
+
+        ```bash
+        # https://github.com/marcelodolza/iziToast
+        npm install vue-izitoast -D // --save-dev
+        ```
+
+        ```js
+        // https://www.npmjs.com/package/vue-izitoast
+        import VueIziToast from "vue-izitoast";
+        import "izitoast/dist/css/iziToast.css";
+
+        Vue.use(VueIziToast);
+        ```
+
+    5. JS function types
+
+        > https://dmitripavlutin.com/6-ways-to-declare-javascript-functions/
+        > used arrow function here to get outside this object
+
+        ```js
+        ['<button><b>YES</b></button>', (instance, toast) => {
+        ```
