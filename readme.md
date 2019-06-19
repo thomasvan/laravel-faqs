@@ -1137,6 +1137,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
             v-on: ~ @
             v-if and v-else // must be in the same level element
             v-html // ~ {!! !!}
+            v-cloak //  v-cloak is a attribute that you can add to a element you want to hide, while Vue is mounting. Soon as Vue is ready, this attribute is removed.
         ```
 
     2. Basic

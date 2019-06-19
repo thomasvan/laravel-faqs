@@ -7,10 +7,19 @@ export default {
       body: this.answer.body,
       bodyHtml: this.answer.body_html,
       id: this.answer.id,
-      questionId: this.answer.question_id
+      questionId: this.answer.question_id,
+      beforeEditCache: null
     };
   },
   methods: {
+    edit() {
+      this.beforeEditCache = this.body;
+      this.editing = true;
+    },
+    cancel() {
+      this.body = this.beforeEditCache;
+      this.editing = false;
+    },
     update() {
       axios
         .patch(`/questions/${this.questionId}/answers/${this.id}`, {
@@ -23,7 +32,13 @@ export default {
         })
         .catch(err => {
           console.log("Something went wrong!");
+          alert(err.response.data.message);
         });
+    }
+  },
+  computed: {
+    isInvalid() {
+      return this.body.length < 10;
     }
   }
 };
