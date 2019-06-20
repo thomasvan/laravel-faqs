@@ -1242,3 +1242,16 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
             return back();
         }
         ```
+
+    7. Create a Vue component
+
+        ```js
+        // declare a plugin authorize.js with install function inside
+        export default {
+            install(Vue, options) {
+                Vue.prototype.authorize = function(policy, model) {
+
+        // in app.js, let import and use
+        import Authorization from "./authorization/authorize";
+        Vue.use(Authorization);
+        ```
