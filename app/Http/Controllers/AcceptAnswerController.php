@@ -9,8 +9,12 @@ class AcceptAnswerController extends Controller
 {
     public function __invoke(Answer $answer)
     {
-       $answer->question->acceptBestAnswer($answer);
-       return back();
+        $answer->question->acceptBestAnswer($answer);
+        if (request()->expectsJson()) {
+            return response()->json([
+                'message' => 'You have marked this answer as best answer'
+            ]);
+        }
+        return back();
     }
 }
-

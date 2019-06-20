@@ -1167,11 +1167,17 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
 
         2. Components: '''resources/js/components/UserInfo.vue'''
 
+            ```js
+            // remember the ; after export }
+            <script>
+                export default { // ... };
+            ```
+
         3. Called by:
 
-        ```xml
-        <user-info :model="{{ $question }}" label="Asked"></user-info>
-        ```
+            ```xml
+            <user-info :model="{{ $question }}" label="Asked"></user-info>
+            ```
 
     3. Update field using axios
 
