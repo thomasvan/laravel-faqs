@@ -1222,3 +1222,17 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
         ```js
         ['<button><b>YES</b></button>', (instance, toast) => {
         ```
+
+    6. Request / Response
+
+        ```php
+        // return null and 204 code in case there is nothing to return as in FavoriteController
+        public function store(Request $request, Question $question)
+        {
+            $question->favorites()->attach(auth()->id());
+            if ($request->expectsJson()) {
+                return response()->json(null, 204);
+            }
+            return back();
+        }
+        ```
