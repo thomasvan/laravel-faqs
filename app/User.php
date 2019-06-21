@@ -5,8 +5,6 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use App\Question;
-use App\Answer;
 
 class User extends Authenticatable
 {
@@ -98,12 +96,14 @@ class User extends Authenticatable
     public function voteQuestion(Question $question, $vote)
     {
         $voteQuestions = $this->voteQuestions();
-        $this->_vote($voteQuestions, $question, $vote);
+
+        return $this->_vote($voteQuestions, $question, $vote);
     }
     public function voteAnswer(Answer $answer, $vote)
     {
         $voteAnswers = $this->voteAnswers();
-        $this->_vote($voteAnswers, $answer, $vote);
+
+        return $this->_vote($voteAnswers, $answer, $vote);
     }
 
     private function _vote($relationship, $model, $vote)
@@ -119,5 +119,7 @@ class User extends Authenticatable
 
         $model->votes_count = $upVotes + $downVotes;
         $model->save();
+
+        return $model->votes_count;
     }
 }

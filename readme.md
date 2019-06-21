@@ -307,6 +307,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
         ```bash
         php artisan route:list
         php artisan route:list --name=questions # filtering by name
+        php artisan route:list --path=vote # filtering by name
         ```
 
     2. Create a simple action and return the view route
@@ -1138,6 +1139,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
             v-if and v-else // must be in the same level element
             v-html // ~ {!! !!}
             v-cloak //  v-cloak is a attribute that you can add to a element you want to hide, while Vue is mounting. Soon as Vue is ready, this attribute is removed.
+            :name="'my-name'" ~ name="my-name" // because this unchanged attr does not need binding
         ```
 
     2. Basic
@@ -1254,4 +1256,20 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
         // in app.js, let import and use
         import Authorization from "./authorization/authorize";
         Vue.use(Authorization);
+        ```
+
+        > tips:
+
+        ```js
+        components: {
+            Favorite: Favorite,
+            // will be used as <favorite> if it is FavoriteCom then will be used as <favorite-com>
+            Accept: Accept
+        },
+
+        // can be in short form
+        components: {
+            Favorite,
+            Accept
+        },
         ```
