@@ -1,8 +1,9 @@
 export default {
     modify(user, model) {
-        return user.id == model.id;
+        return user.id === model.user_id;
     },
+
     accept(user, answer) {
-        return user.id == answer.user.id;
+        return user.id === answer.question.user_id;
     }
 };
