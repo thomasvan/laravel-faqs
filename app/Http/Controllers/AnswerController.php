@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 
 class AnswerController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->except('index');
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -101,5 +106,10 @@ class AnswerController extends Controller
             ]);
         }
         return back()->with('success', 'Your answer has been removed successfully.');
+    }
+
+    public function index(Question $question)
+    {
+        return $question->answers()->with('user')->simplePaginate(3);
     }
 }

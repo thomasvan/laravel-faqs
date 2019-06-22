@@ -1201,6 +1201,10 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
                 body:this.body
             });
             }
+
+            fetch(endpoint) {
+                axios.get(endpoint).then(({ data }) => {
+            // the promiser "then" with {} wrap will map the object data with <whatever response>.data
         }
         };
         ```
@@ -1256,6 +1260,8 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
         // in app.js, let import and use
         import Authorization from "./authorization/authorize";
         Vue.use(Authorization);
+
+        created() method use to fetch data from API
         ```
 
         > tips:

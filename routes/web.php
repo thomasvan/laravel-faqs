@@ -28,7 +28,7 @@ Route::resource('questions', 'QuestionController')->except('show');
 
 Route::get('/questions/{slug}', 'QuestionController@show')->name('questions.show');
 
-Route::resource('questions.answers', 'AnswerController')->only(['store', 'edit', 'update', 'destroy']);
+Route::resource('questions.answers', 'AnswerController')->only(['store', 'edit', 'update', 'destroy', 'index']);
 // or 
 // Route::resource('questions.answers', 'AnswerController')->except(['index', 'create', 'show']);
 
