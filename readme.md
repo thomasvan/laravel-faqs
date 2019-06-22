@@ -809,6 +809,11 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
     }
     ```
 
+    ```php
+    $answer->load('user') // ~ Answer::with('user')->find($answer->id)
+    ```
+
+
 20. Install fontawesome package using npm
 
     1. Search package at https://www.npmjs.com/search?q=fortawesome

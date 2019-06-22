@@ -26,7 +26,7 @@ Vue.use(Authorization);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
 Vue.component("user-info", require("./components/UserInfo.vue").default);
-Vue.component("vote", require("./components/Vote.vue").default);
+Vue.component("vote", require("./components/Vote.vue").default); // temporarily being used by Question's Vote, will remove it in next branch
 Vue.component("answers", require("./components/Answers.vue").default);
 
 /**

@@ -37,6 +37,8 @@
   </div>
 </template>
 <script>
+import Vote from "./Vote.vue";
+
 export default {
   props: ["answer"],
   data() {
@@ -112,6 +114,7 @@ export default {
     endpoint() {
       return `/questions/${this.questionId}/answers/${this.id}`;
     }
-  }
+  },
+  components: { Vote }
 };
 </script>
