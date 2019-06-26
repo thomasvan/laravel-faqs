@@ -2,49 +2,48 @@
 
 ## Installation
 
-```bash
-composer global require laravel/installer
-echo 'export PATH="$PATH:$HOME/.composer/vendor/bin"' >> ~/.bashrc
-source ~/.bashrc
-tee -a ~/.profile << SCRIPT
-```
+    ```bash
+    composer global require laravel/installer
+    echo 'export PATH="$PATH:$HOME/.composer/vendor/bin"' >> ~/.bashrc
+    source ~/.bashrc
+    tee -a ~/.profile << SCRIPT
+    ```
 
 ## Set PATH so it includes user's composer bin if it exists
 
-````bash
-if [ -d "\$HOME/.composer/vendor/bin" ] ; then
-    PATH="\$HOME/.composer/vendor/bin:\$PATH"
-fi
-SCRIPT
+    ```bash
+    if [ -d "\$HOME/.composer/vendor/bin" ] ; then
+        PATH="\$HOME/.composer/vendor/bin:\$PATH"
+    fi
+    SCRIPT
 
-source ~/.profile
-laravel new faqs```
+    source ~/.profile
+    laravel new faqs
+    ```
 
 ## Command line tool
 
-```bash
-php artisan tinker
-$faker = Faker\Factory::create();
-rtrim($faker->sentence(rand(5,10)),'.')
-$faker->paragraphs(rand(3,7),true)
-=> "Rem subscript omanis volutes corporal et"
+    ```bash
+    php artisan tinker
+    $faker = Faker\Factory::create();
+    rtrim($faker->sentence(rand(5,10)),'.')
+    $faker->paragraphs(rand(3,7),true)
+    => "Rem subscript omanis volutes corporal et"
 
-# Update a question
-$answer = App\Answer::find(48);
-$question = $answer->question;
-$question->best_answer_id = 48;
-$question->save();
-# ...
-$question->refresh();
-````
+    # Update a question
+    $answer = App\Answer::find(48);
+    $question = $answer->question;
+    $question->best_answer_id = 48;
+    $question->save();
+    # ...
+    $question->refresh();
+    ```
 
-Publish Tinker's configuration file
+    Publish Tinker's configuration file
 
-```bash
-php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
-```
-
----
+    ```bash
+    php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
+    ```
 
 1.  Initialize
 
@@ -1333,4 +1332,8 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
 
     1. Installation `snap install heroku --classic`
 
-    2.
+    2. Login `heroku login -i`
+
+    3. Create a project `heroku create topfaqs`
+
+    4. echo web: vendor/bin/heroku-php-apache2 public/ > Procfile
