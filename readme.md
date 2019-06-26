@@ -1364,12 +1364,13 @@
         DB_DATABASE=da3jb0c0i61qfu
         ```
 
-        ```
+        ```bash
         heroku config:set APP_KEY=base64:bJPPJY5/Kam7Cc+hBrtaUf4xNk2HikcWHY+7/JHJRMw=
         ```
 
-    9. Run the migrate command `heroku run php artisan migrate`
+    9. Run the migrate commands:
 
-    ```
-
-    ```
+        ```bash
+        heroku run php artisan migrate
+        heroku run php artisan migrate:fresh --seed
+        ```
