@@ -11,15 +11,14 @@ tee -a ~/.profile << SCRIPT
 
 ## Set PATH so it includes user's composer bin if it exists
 
-```bash
+````bash
 if [ -d "\$HOME/.composer/vendor/bin" ] ; then
     PATH="\$HOME/.composer/vendor/bin:\$PATH"
 fi
 SCRIPT
 
 source ~/.profile
-laravel new faqs
-```
+laravel new faqs```
 
 ## Command line tool
 
@@ -37,7 +36,7 @@ $question->best_answer_id = 48;
 $question->save();
 # ...
 $question->refresh();
-```
+````
 
 Publish Tinker's configuration file
 
@@ -813,7 +812,6 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
     $answer->load('user') // ~ Answer::with('user')->find($answer->id)
     ```
 
-
 20. Install fontawesome package using npm
 
     1. Search package at https://www.npmjs.com/search?q=fortawesome
@@ -1284,3 +1282,55 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
             Accept
         },
         ```
+
+    8. Mixins
+
+        > Mixins are a flexible way to distribute reusable functionalities for Vue components. A mixin object can contain any component options. When a component uses a mixin, all options in the mixin will be “mixed” into the component’s own options.
+
+        1. Define minix as a vue component
+
+            ```js
+            export default {
+                data() {
+                    return {
+                        editing: false
+                    };
+                },
+                methods: {
+                    edit() {
+                        this.setEditCache();
+                        this.editing = true;
+                    },
+
+                    cancel() {
+                        this.restoreFromCache();
+                        this.editing = false;
+                    },
+                    setEditCache() {},
+                    restoreFromCache() {},
+                    delete() {}
+                }
+            };
+            ```
+
+        2. Include it from another components
+
+            ```js
+            import modification from "../mixins/modification";
+            export default {
+                mixins: [modification]
+                //....
+            };
+            ```
+
+31. Laravel Upgrading
+
+    1. Non-Free services: https://laravelshift.com/
+
+    2. Or feel free to follow this link https://laravel.com/docs/5.8/upgrade
+
+32. Heroku
+
+    1. Installation `snap install heroku --classic`
+
+    2.
