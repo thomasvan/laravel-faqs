@@ -1322,13 +1322,24 @@
             };
             ```
 
-31. Laravel Upgrading
+31. HTTPS for production
+
+    ```php
+    // AppServiceProvider.php
+    public function boot()
+    {
+        if (config(app . env) == 'production')
+            \URL::forceScheme('https')
+    }
+    ```
+
+32. Laravel Upgrading
 
     1. Non-Free services: https://laravelshift.com/
 
     2. Or feel free to follow this link https://laravel.com/docs/5.8/upgrade
 
-32. Heroku
+33. Heroku
 
     1. Installation `snap install heroku --classic`
 
@@ -1337,3 +1348,28 @@
     3. Create a project `heroku create topfaqs`
 
     4. echo web: vendor/bin/heroku-php-apache2 public/ > Procfile
+
+    5. Push to heroku `git add Procfile && git commit -m "Procfile loade" && git push heroku master`
+
+    6. Create the database `heroku addons:create heroku-postgressql:hobby-dev`
+
+    7. Get the database url: `heroku config:get DATABASE_URL` >> postgres://lreebluwxtaxwg:6b9f05f1269ee078ef819a0a702803ce0b2553eba9e02ddcb915ab000457b0dd@ec2-107-20-185-16.compute-1.amazonaws.com:5432/da3jb0c0i61qfu
+
+    8. Config the variables
+
+        ```bash
+        heroku config:set DB_CONNECTION=pgsql DB_USERNAME=lreebluwxtaxwg \
+        DB_PASSWORD=6b9f05f1269ee078ef819a0a702803ce0b2553eba9e02ddcb915ab000457b0dd \
+        DB_HOST=ec2-107-20-185-16.compute-1.amazonaws.com DB_PORT=5432 \
+        DB_DATABASE=da3jb0c0i61qfu
+        ```
+
+        ```
+        heroku config:set APP_KEY=base64:bJPPJY5/Kam7Cc+hBrtaUf4xNk2HikcWHY+7/JHJRMw=
+        ```
+
+    9. Run the migrate command `heroku run php artisan migrate`
+
+    ```
+
+    ```
