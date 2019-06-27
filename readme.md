@@ -1372,5 +1372,12 @@
 
         ```bash
         heroku run php artisan migrate
+        /**
+        "fzaninotto/faker" of "require-dev" for "require"
+        git push heroku master
+        heroku run bash
+        composer install
+        php artisan db:seed
+        **/
         heroku run php artisan migrate:fresh --seed
         ```
