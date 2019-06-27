@@ -1381,3 +1381,30 @@
         **/
         heroku run php artisan migrate:fresh --seed
         ```
+
+34. Vue Editor component
+
+    1. Download markdown-it
+
+        ```bash
+        npm install markdown-it --save-dev
+        npm install autoresize -D
+        ```
+
+    2. Import to vue component
+
+        ```js
+        <script>
+            import MarkdownIt from "markdown-it";
+            import autosize from "autosize";
+            const md = new MarkdownIt();
+
+
+            mounted() {
+                autosize(this.$el.querySelector("textarea"));
+            },
+
+            updated() {
+                autosize(this.$el.querySelector("textarea"));
+            }
+        ```
