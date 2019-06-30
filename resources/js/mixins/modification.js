@@ -1,9 +1,19 @@
+import Vote from '../components/Vote.vue';
+import UserInfo from '../components/UserInfo.vue';
+import MEditor from '../components/MEditor.vue';
+import highlight from './highlight';
+
 export default {
+    mixins: [highlight],
+
+    components: { Vote, UserInfo, MEditor },
+
     data() {
         return {
             editing: false
-        };
+        }
     },
+
     methods: {
         edit() {
             this.setEditCache();
@@ -14,17 +24,22 @@ export default {
             this.restoreFromCache();
             this.editing = false;
         },
+
         setEditCache() {},
         restoreFromCache() {},
+
         update() {
-            axios
-                .put(this.endpoint, this.payload())
-                .catch(({ response }) => {
+            axios.put(this.endpoint, this.payload())
+                .catch(({
+                    response
+                }) => {
                     this.$toast.error(response.data.message, "Error", {
                         timeout: 3000
                     });
                 })
-                .then(({ data }) => {
+                .then(({
+                    data
+                }) => {
                     this.bodyHtml = data.body_html;
                     this.$toast.success(data.message, "Success", {
                         timeout: 3000
@@ -32,44 +47,40 @@ export default {
                     this.editing = false;
                 });
         },
+
         payload() {},
+
         destroy() {
-            this.$toast.question("Are you sure about that?", "Confirm", {
+            this.$toast.question('Are you sure about that?', "Confirm", {
                 timeout: 20000,
                 close: false,
                 overlay: true,
-                displayMode: "once",
-                id: "question",
+                displayMode: 'once',
+                id: 'question',
                 zindex: 999,
-                title: "Hey",
-                position: "center",
+                title: 'Hey',
+                position: 'center',
                 buttons: [
-                    [
-                        "<button><b>YES</b></button>",
-                        (instance, toast) => {
-                            this.delete();
+                    ['<button><b>YES</b></button>', (instance, toast) => {
 
-                            instance.hide(
-                                { transitionOut: "fadeOut" },
-                                toast,
-                                "button"
-                            );
-                        },
-                        true
-                    ],
-                    [
-                        "<button>NO</button>",
-                        function(instance, toast) {
-                            instance.hide(
-                                { transitionOut: "fadeOut" },
-                                toast,
-                                "button"
-                            );
-                        }
-                    ]
+                        this.delete();
+
+                        instance.hide({
+                            transitionOut: 'fadeOut'
+                        }, toast, 'button');
+
+                    }, true],
+                    ['<button>NO</button>', function (instance, toast) {
+
+                        instance.hide({
+                            transitionOut: 'fadeOut'
+                        }, toast, 'button');
+
+                    }],
                 ]
             });
         },
+
         delete() {}
     }
 };

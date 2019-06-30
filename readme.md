@@ -1139,9 +1139,11 @@
             v-bind: ~ :
             v-on: ~ @
             v-if and v-else // must be in the same level element
+            v-show="..." and v-show="!..." // similar with v-if and v-else but remain the DOM element
             v-html // ~ {!! !!}
             v-cloak //  v-cloak is a attribute that you can add to a element you want to hide, while Vue is mounting. Soon as Vue is ready, this attribute is removed.
             :name="'my-name'" ~ name="my-name" // because this unchanged attr does not need binding
+            ref // register a reference to an element or component
         ```
 
     2. Basic
@@ -1398,6 +1400,7 @@
             import MarkdownIt from "markdown-it";
             import autosize from "autosize";
             const md = new MarkdownIt();
+        ```
 
 
             mounted() {
@@ -1408,3 +1411,27 @@
                 autosize(this.$el.querySelector("textarea"));
             }
         ```
+
+    3. Syntax highlight
+
+        1. Using prismjs
+
+            ```bash
+            # go to npmjs.com
+            # https://www.npmjs.com/package/markdown-it-prism
+            npm i markdown-it-prism -D
+            ```
+
+        2. Include the prism themes in webpack.mix.js
+
+            ```js
+            //webpack.mix.js
+            mix.js('resources/js/app.js', 'public/js')
+            .copy('node_modules/prismjs/themes', 'public/css/prismjs-themes')
+            .sass('resources/sass/app.scss', 'public/css');
+            ```
+
+            ```html
+            <!-- resources/views/layouts/app.blade.php -->
+            <link href="{{ asset('css/prismjs-themes/prism-twilight.css') }}" rel="stylesheet">
+            ```
