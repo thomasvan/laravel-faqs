@@ -70751,10 +70751,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Vote_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/Vote.vue */ "./resources/js/components/Vote.vue");
 /* harmony import */ var _components_UserInfo_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/UserInfo.vue */ "./resources/js/components/UserInfo.vue");
 /* harmony import */ var _components_MEditor_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/MEditor.vue */ "./resources/js/components/MEditor.vue");
+/* harmony import */ var _highlight__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./highlight */ "./resources/js/mixins/highlight.js");
+
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  mixins: [_highlight__WEBPACK_IMPORTED_MODULE_3__["default"]],
   components: {
     Vote: _components_Vote_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     UserInfo: _components_UserInfo_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
