@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Event Handling</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+    <style>
+    #box {
+        min-width: 300px;
+        min-height: 300px;
+    }
+    </style>
+</head>
+<body>
+    <div class="container py-5" id="app">
+        <div id="box" class="row"
+            :class="{ 'bg-info': !hovered, 'bg-primary': hovered }"
+            @mouseover="hovered = true" @mouseout="hovered = false">
+           <div class="col my-auto text-center text-light">
+             Mouse over here
+           </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script>
+    new Vue({
+        el: '#app',
+        data: {
+            hovered: false
+        }
+    })
+    </script>
+</body>
+</html>

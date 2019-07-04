@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>List Rendering</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css"
+      integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <div class="container py-5" id="app">
+      <h2>Top 10 Frameworks</h2>
+      <ul class="list-group">
+        <li
+          class="list-group-item d-flex justify-content-between align-items-center"
+          v-for="(score,framework) in topTenFrameworks"
+        >
+          {{ framework }}
+          <span class="badge badge-primary badge-pill">{{ score }}</span>
+        </li>
+      </ul>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script>
+      new Vue({
+        el: "#app",
+        data: {
+          topTenFrameworks: {
+            "ASP.NET": 100,
+            AngularJS: 96,
+            "Ruby on Rails": 95,
+            "ASP.NET MVC": 94,
+            React: 93,
+            Django: 91,
+            Angular: 89,
+            Laravel: 89,
+            Spring: 88,
+            Express: 87
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Computed Property 1</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container py-5" id="app">
+        <form class="form-inline">
+            <select v-model="title" class="form-control mr-2">
+                <option value="Mr.">Mr.</option>
+                <option value="Ms.">Ms.</option>
+            </select>
+            <input type="text" v-model="name" placeholder="Name" class="form-control mr-2">
+            <input type="text" v-model="email" placeholder="Email" class="form-control">
+        </form>
+        <hr>
+        <div class="alert alert-info">
+            <p>Uppercase name: {{ upperName() }}</p>
+            <p>Lowercase name: {{ lowerName }}</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script>
+        let title = "Mr.";
+        new Vue({
+            el: '#app',
+            data: {
+                name: 'John Doe',
+                email: 'johndoe@test.com'
+            },
+            methods: {
+                upperName () {
+                    console.log('upperName ()');
+                    return (title + " " + this.name).toUpperCase();
+                }
+            },
+            computed: {
+                lowerName () {
+                    console.log('computed lowerName ()');
+                    return (title + " " + this.name).toLowerCase()
+                }
+            }
+        })
+    </script>
+</body>
+</html>

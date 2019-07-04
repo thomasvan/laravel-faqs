@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Event Handling</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+    <style>
+    #box {
+        min-width: 300px;
+        min-height: 300px;
+    }
+    </style>
+</head>
+<body>
+    <div class="container py-5" id="app">
+        <div id="box" v-on:mousemove="getCoordinates" class="row bg-info">
+           <div class="col my-auto text-center text-light">
+             Mouse over here
+           </div>
+        </div>
+
+        <p class="lead text-center mt-3">
+            <span class="badge badge-primary">X</span> {{ x }}
+            <span class="badge badge-primary ml-2">Y</span> {{ y }}
+        </p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script>
+    new Vue({
+        el: '#app',
+        data: {
+            x: 0,
+            y: 0
+        },
+        methods: {
+            getCoordinates (event) {
+                this.x = event.clientX;
+                this.y = event.clientY;
+            }
+        }
+    })
+    </script>
+</body>
+</html>

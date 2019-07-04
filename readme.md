@@ -2,50 +2,50 @@
 
 ## Installation
 
-    ```bash
-    composer global require laravel/installer
-    echo 'export PATH="$PATH:$HOME/.composer/vendor/bin"' >> ~/.bashrc
-    source ~/.bashrc
-    tee -a ~/.profile << SCRIPT
-    ```
+```bash
+composer global require laravel/installer
+echo 'export PATH="$PATH:$HOME/.composer/vendor/bin"' >> ~/.bashrc
+source ~/.bashrc
+tee -a ~/.profile << SCRIPT
+```
 
 ## Set PATH so it includes user's composer bin if it exists
 
-    ```bash
-    if [ -d "\$HOME/.composer/vendor/bin" ] ; then
-        PATH="\$HOME/.composer/vendor/bin:\$PATH"
-    fi
-    SCRIPT
+```bash
+if [ -d "\$HOME/.composer/vendor/bin" ] ; then
+    PATH="\$HOME/.composer/vendor/bin:\$PATH"
+fi
+SCRIPT
 
-    source ~/.profile
-    laravel new faqs
-    ```
+source ~/.profile
+laravel new faqs
+```
 
 ## Command line tool
 
-    ```bash
-    php artisan tinker
-    $faker = Faker\Factory::create();
-    rtrim($faker->sentence(rand(5,10)),'.')
-    $faker->paragraphs(rand(3,7),true)
-    => "Rem subscript omanis volutes corporal et"
+```bash
+php artisan tinker
+$faker = Faker\Factory::create();
+rtrim($faker->sentence(rand(5,10)),'.')
+$faker->paragraphs(rand(3,7),true)
+=> "Rem subscript omanis volutes corporal et"
 
-    # Update a question
-    $answer = App\Answer::find(48);
-    $question = $answer->question;
-    $question->best_answer_id = 48;
-    $question->save();
-    # ...
-    $question->refresh();
-    ```
+# Update a question
+$answer = App\Answer::find(48);
+$question = $answer->question;
+$question->best_answer_id = 48;
+$question->save();
+# ...
+$question->refresh();
+```
 
-    Publish Tinker's configuration file
+Publish Tinker's configuration file
 
-    ```bash
-    php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
-    ```
+```bash
+php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
+```
 
-1.  Initialize
+1. Initialize
 
     ```bash
     composer update
@@ -53,7 +53,7 @@
     npm install
     ```
 
-2.  .env
+2. .env
 
     Configure DB info
 
@@ -64,7 +64,7 @@
     php artisan config:cache
     ```
 
-3.  Create model and table
+3. Create model and table
 
     ```bash
     php artisan make:model Question -m
@@ -77,7 +77,7 @@
     php artisan migrate
     ```
 
-4.  Create model relationship
+4. Create model relationship
 
     ```php
     // in CreateQuestionsTable
@@ -115,7 +115,7 @@
 
     > Avoid naming a column name the same as an relationship function. Laravel will retrieve the column name first and return it if it is existing.
 
-5.  Generate Fake Data
+5. Generate Fake Data
     database/factories/UserFactory.php
     database/factories/QuestionFactory.php
 
@@ -157,7 +157,7 @@
     php artisan db:seed --class=FavoritesTableSeeder // run specific seeder
     ```
 
-6.  Perform a migration
+6. Perform a migration
 
     ```bash
      php artisan make:migration rename_answer_column_in_questions_table --table=questions
@@ -192,7 +192,7 @@
     }
     ```
 
-7.  Resource Controllers
+7. Resource Controllers
 
     ```bash
     php artisan make:controller QuestionController --resource --model Question
@@ -229,7 +229,7 @@
     nano resources/views/vendor/pagination/bootstrap-4.blade.php
     ```
 
-8.  Debugging
+8. Debugging
 
     ```bash
     composer require barryvdh/laravel-debugbar --dev
@@ -254,7 +254,7 @@
     }
     ```
 
-9.  CSS
+9. CSS
 
     1. Css location
        Related files are located at `webpack.mix.js` `node_modules\bootstrap\scss\_variables.scss` `resources/sass/_variables.scss` `resources/sass/app.scss` `public/css/app.css` and loaded at `resources/views/layouts/app.blade.php`
@@ -386,78 +386,78 @@
 
 12. Editing form
 
-        1. Define an action
+    1. Define an action
 
-            ```php
-            /**
-             * Show the form for editing the specified resource.
-             *
-             * @param  \App\Question  $question
-                * @return \Illuminate\Http\Response
-                */
-            public function edit(Question $question)
-            {
-                return view("questions.edit", compact($question));
-            }
-            ```
-
-        2. Check the routing
-
-            ```bash
-            php artisan route:list -name=questions.update
-            --------+-----------+----------------------+------------------+------------------------------------------------+------------+
-            | Domain | Method    | URI                  | Name             | Action                                         | Middleware |
-            +--------+-----------+----------------------+------------------+------------------------------------------------+------------+
-            |        | PUT|PATCH | questions/{question} | questions.update | App\Http\Controllers\QuestionController@update | web        |
-            +--------+-----------+----------------------+------------------+------------------------------------------------+------------+
-
-            ```
-
-        3. Create the view
-
-            > Change the action method to PUT instead of POST
-
-            ```xml
-            {{ method_field('PUT') }} or @method('PUT')
-            {{ method_field('PATCH') }} or @method('PATCH') <!-- if there is one field updated -->
-            ```
-
-            > Use the @old directive to keep the old value as error occurred
-
-            ```xml
-            <form action="{{ route('questions.answers.update', [$question->id, $answer->id]) }}" method="post">
-                @csrf
-                @method('PATCH')
-                <div class="form-group">
-                    <textarea class="form-control {{ $errors->has('body') ? 'is-invalid' : '' }}" rows="7" name="body">{{ old('body', $answer->body) }}</textarea>
-                    @if ($errors->has('body'))
-                        <div class="invalid-feedback">
-                            <strong>{{ $errors->first('body') }}</strong>
-                        </div>
-                    @endif
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-lg btn-outline-primary">Update</button>
-                </div>
-            </form>
-            ```
-
-        4. Update action in QuestionController
-
-            ```php
-            /**
-             * Update the specified resource in storage.
-            *
-            * @param  \Illuminate\Http\Request  $request
-            * @param  \App\Question  $question
+        ```php
+        /**
+         * Show the form for editing the specified resource.
+         *
+         * @param  \App\Question  $question
             * @return \Illuminate\Http\Response
             */
-            public function update(AskQuestionRequest $request, Question $question)
-            {
-                $question->update($request->only('title', 'body'));
-                return redirect('/questions')->with('success', 'Your question has been updated successfully.');
-            }
-            ```
+        public function edit(Question $question)
+        {
+            return view("questions.edit", compact($question));
+        }
+        ```
+
+    2. Check the routing
+
+        ```bash
+        php artisan route:list -name=questions.update
+        --------+-----------+----------------------+------------------+------------------------------------------------+------------+
+        | Domain | Method    | URI                  | Name             | Action                                         | Middleware |
+        +--------+-----------+----------------------+------------------+------------------------------------------------+------------+
+        |        | PUT|PATCH | questions/{question} | questions.update | App\Http\Controllers\QuestionController@update | web        |
+        +--------+-----------+----------------------+------------------+------------------------------------------------+------------+
+
+        ```
+
+    3. Create the view
+
+        > Change the action method to PUT instead of POST
+
+        ```xml
+        {{ method_field('PUT') }} or @method('PUT')
+        {{ method_field('PATCH') }} or @method('PATCH') <!-- if there is one field updated -->
+        ```
+
+        > Use the @old directive to keep the old value as error occurred
+
+        ```xml
+        <form action="{{ route('questions.answers.update', [$question->id, $answer->id]) }}" method="post">
+            @csrf
+            @method('PATCH')
+            <div class="form-group">
+                <textarea class="form-control {{ $errors->has('body') ? 'is-invalid' : '' }}" rows="7" name="body">{{ old('body', $answer->body) }}</textarea>
+                @if ($errors->has('body'))
+                    <div class="invalid-feedback">
+                        <strong>{{ $errors->first('body') }}</strong>
+                    </div>
+                @endif
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-lg btn-outline-primary">Update</button>
+            </div>
+        </form>
+        ```
+
+    4. Update action in QuestionController
+
+        ```php
+        /**
+         * Update the specified resource in storage.
+        *
+        * @param  \Illuminate\Http\Request  $request
+        * @param  \App\Question  $question
+        * @return \Illuminate\Http\Response
+        */
+        public function update(AskQuestionRequest $request, Question $question)
+        {
+            $question->update($request->only('title', 'body'));
+            return redirect('/questions')->with('success', 'Your question has been updated successfully.');
+        }
+        ```
 
 13. Deleting form
 
@@ -1146,7 +1146,12 @@
             ref // register a reference to an element or component
         ```
 
-    2. Basic
+    2. Vue methods and computed
+
+        > the differences are methods will be called as soon as vue is refreshed which trigger by a variable re-activated
+        > computed is only called as soon as related properties are updated
+
+    3. Basic
 
         1. Prepare the model
 
@@ -1185,7 +1190,7 @@
             <user-info :model="{{ $question }}" label="Asked"></user-info>
             ```
 
-    3. Update field using axios
+    4. Update field using axios
 
         ```js
         export default {
@@ -1215,7 +1220,7 @@
 
         > no csrf tonken needed since it has been included in resources/js/bootstrap.js
 
-    4. Install vue.js package
+    5. Install vue.js package
 
         ```bash
         # https://github.com/marcelodolza/iziToast
@@ -1230,7 +1235,7 @@
         Vue.use(VueIziToast);
         ```
 
-    5. JS function types
+    6. JS function types
 
         > https://dmitripavlutin.com/6-ways-to-declare-javascript-functions/
         > used arrow function here to get outside this object
@@ -1239,7 +1244,7 @@
         ['<button><b>YES</b></button>', (instance, toast) => {
         ```
 
-    6. Request / Response
+    7. Request / Response
 
         ```php
         // return null and 204 code in case there is nothing to return as in FavoriteController
@@ -1253,7 +1258,7 @@
         }
         ```
 
-    7. Create a Vue component
+    8. Create a Vue component
 
         ```js
         // declare a plugin authorize.js with install function inside
@@ -1284,7 +1289,7 @@
         },
         ```
 
-    8. Mixins
+    9. Mixins
 
         > Mixins are a flexible way to distribute reusable functionalities for Vue components. A mixin object can contain any component options. When a component uses a mixin, all options in the mixin will be “mixed” into the component’s own options.
 
@@ -1400,8 +1405,6 @@
             import MarkdownIt from "markdown-it";
             import autosize from "autosize";
             const md = new MarkdownIt();
-        ```
-
 
             mounted() {
                 autosize(this.$el.querySelector("textarea"));

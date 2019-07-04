@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Event Handling</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+    <style>
+    #box {
+        min-width: 300px;
+        min-height: 300px;
+    }
+    </style>
+</head>
+<body>
+    <div class="container py-5" id="app">
+        <div class="alert" :class="alertType">
+            This is alert-primary
+        </div>
+
+        <br>
+        <select v-model="alertType">
+            <option value="alert-primary">Primary</option>
+            <option value="alert-secondary">Secondary</option>
+            <option value="alert-success">Success</option>
+            <option value="alert-danger">Danger</option>
+            <option value="alert-warning">Warning</option>
+            <option value="alert-info">Info</option>
+            <option value="alert-light">Light</option>
+            <option value="alert-dark">Dark</option>
+        </select>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script>
+    new Vue({
+        el: '#app',
+        data: {
+            alertType: 'alert-primary'
+        }
+    })
+    </script>
+</body>
+</html>

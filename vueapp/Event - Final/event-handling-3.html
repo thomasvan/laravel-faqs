@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Event Handling</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container py-5" id="app">
+        <h1>Vote Your Favorite Frameworks</h1>
+        <ul class="list-group mb-3">
+            <li v-for="framework in favoriteFrameworks" class="list-group-item d-flex justify-content-between align-items-center">
+                {{ framework.name }}
+                <button v-on:click="upvote(framework)" class="btn btn-outline-primary">
+                    Upvote
+                    <span class="badge badge-primary badge-pill">{{ framework.votes }}</span>
+                </button>
+            </li>
+        </ul>
+
+        <form v-on:submit.prevent="handleSubmit">
+            <div class="input-group">
+              <input v-model="framework" type="text" class="form-control" placeholder="Enter Your another favorite Framework">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="submit">Submit</button>
+              </div>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script>
+    new Vue({
+        el: '#app',
+        data: {
+            favoriteFrameworks: [
+                { name: "Angular", votes: 0 },
+                { name: "React.js", votes: 0 },
+                { name: "Vue.js", votes: 0 },
+            ],
+            framework: ''
+        },
+        methods: {
+            upvote (framework) {
+                framework.votes++
+            },
+            handleSubmit () {
+                this.favoriteFrameworks.push({
+                    name: this.framework,
+                    votes: 0
+                });
+                this.framework = ''
+            }
+        }
+    })
+    </script>
+</body>
+</html>
