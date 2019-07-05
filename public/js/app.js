@@ -4403,26 +4403,35 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
 var md = new markdown_it__WEBPACK_IMPORTED_MODULE_0___default.a();
 md.use(markdown_it_prism__WEBPACK_IMPORTED_MODULE_1___default.a);
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['body', 'name'],
-  computed: {
-    preview: function preview() {
-      return md.render(this.body);
-    }
+  props: ["body", "name"],
+  data: function data() {
+    return {
+      html: ""
+    };
   },
   methods: {
     tabId: function tabId(tabName) {
-      var hash = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+      var hash = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
       return "".concat(hash).concat(tabName).concat(this.name);
+    },
+    preview: function preview() {
+      console.log(this.body);
+      this.html = md.render(this.body);
     }
   },
   updated: function updated() {
-    autosize__WEBPACK_IMPORTED_MODULE_2___default()(this.$el.querySelector('textarea'));
+    autosize__WEBPACK_IMPORTED_MODULE_2___default()(this.$el.querySelector("textarea"));
   }
 });
 
@@ -57232,7 +57241,8 @@ var render = function() {
             "a",
             {
               staticClass: "nav-link",
-              attrs: { "data-toggle": "tab", href: _vm.tabId("preview", "#") }
+              attrs: { "data-toggle": "tab", href: _vm.tabId("preview", "#") },
+              on: { click: _vm.preview }
             },
             [_vm._v("Preview")]
           )
@@ -57251,7 +57261,7 @@ var render = function() {
       _c("div", {
         staticClass: "tab-pane",
         attrs: { id: _vm.tabId("preview") },
-        domProps: { innerHTML: _vm._s(_vm.preview) }
+        domProps: { innerHTML: _vm._s(_vm.html) }
       })
     ])
   ])
