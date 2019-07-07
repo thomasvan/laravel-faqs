@@ -4426,8 +4426,7 @@ md.use(markdown_it_prism__WEBPACK_IMPORTED_MODULE_1___default.a);
       return "".concat(hash).concat(tabName).concat(this.name);
     },
     preview: function preview() {
-      console.log(this.body);
-      this.html = md.render(this.body);
+      this.html = md.render(" " + this.body);
     }
   },
   updated: function updated() {
@@ -57242,7 +57241,11 @@ var render = function() {
             {
               staticClass: "nav-link",
               attrs: { "data-toggle": "tab", href: _vm.tabId("preview", "#") },
-              on: { click: _vm.preview }
+              on: {
+                click: function($event) {
+                  return _vm.preview()
+                }
+              }
             },
             [_vm._v("Preview")]
           )

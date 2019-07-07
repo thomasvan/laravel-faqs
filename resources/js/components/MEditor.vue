@@ -10,7 +10,7 @@
             class="nav-link"
             data-toggle="tab"
             :href="tabId('preview', '#')"
-            @click="preview"
+            @click="preview()"
           >Preview</a>
         </li>
       </ul>
@@ -44,8 +44,7 @@ export default {
       return `${hash}${tabName}${this.name}`;
     },
     preview() {
-      console.log(this.body);
-      this.html = md.render(this.body);
+      this.html = md.render(" " + this.body);
     }
   },
 
